@@ -17,8 +17,8 @@ import java.io.IOException;
  * Created by Administrator on 2017/9/1.
  */
 
-@Component(value = "tokenBasedIdentityContext")
-public class TokenBasedIdentityContext implements IdentityContext {
+@Component(value = "tokenIdentityContext")
+public class TokenIdentityContext implements IdentityContext {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
