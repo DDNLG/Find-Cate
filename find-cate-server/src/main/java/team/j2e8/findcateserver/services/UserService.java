@@ -39,7 +39,7 @@ public class UserService {
         if (!optionalUser.isPresent()) {
             throw new ResourceNotFoundException(ErrorMessage.ACCOUNT_NOT_EXIST);
         }
-        return verifyStudentByPassword(optionalUser.get(), password, ErrorMessage.ERROR_LOGIN__NAME_OR_PASSWORD.getMessage());
+        return verifyUserByPassword(optionalUser.get(), password, ErrorMessage.ERROR_LOGIN__NAME_OR_PASSWORD.getMessage());
     }
 
     public void registerUserByEmail(String email, String userName,String userTelenumber,String userPhoto, String password) throws Exception {
@@ -60,7 +60,7 @@ public class UserService {
         userRepository.save(parsePasswordWithSalt(user, password));
     }
 
-    private User verifyStudentByPassword(User user, String password, String errorMessage) throws Exception {
+    private User verifyUserByPassword(User user, String password, String errorMessage) throws Exception {
         EnsureDataUtil.ensureNotEmptyData(password, ErrorMessage.EMPTY_PASSWORD.getMessage());
         Encryption encryption = new Encryption();
         if (user.getUserPassword().equals(encryption.getPassword(password, user.getUserSalt()))) {
