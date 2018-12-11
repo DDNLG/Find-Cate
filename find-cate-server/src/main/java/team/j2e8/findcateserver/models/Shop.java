@@ -36,22 +36,22 @@ public class Shop {
     private Double shopLat;
 
 
-    @ManyToMany(targetEntity = Type.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Type.class,fetch = FetchType.LAZY)
     @JoinTable(name = "type_shop", joinColumns = @JoinColumn(name = "shop_type_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id"))
     private Set<Type> types= new HashSet<Type>();
 
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_shopper_id")
     private User user;
 
-    @OneToMany(targetEntity = Food.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shop")
+    @OneToMany(targetEntity = Food.class, fetch = FetchType.LAZY,  mappedBy = "shop")
     private Set<Food> foods= new HashSet<>();
 
 
     @OneToMany(targetEntity = Commity.class,fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,mappedBy = "shop")
+            mappedBy = "shop")
     private Set<Commity> commities= new HashSet<>();
 
     public Integer getShopId() {

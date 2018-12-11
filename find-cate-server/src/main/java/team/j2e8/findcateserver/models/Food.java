@@ -1,5 +1,7 @@
 package team.j2e8.findcateserver.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +11,7 @@ import java.util.Set;
 public class Food {
     @Id//主键
     @Column(name = "food_id")
-    @GeneratedValue//自增
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//自增
     private Integer foodId;
 
     @Column
@@ -26,15 +28,13 @@ public class Food {
     @Column
     private Integer food_dislike;
 
-    @ManyToOne(targetEntity = Food.class,fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Type.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "food_type_id")
     private Type type;
 
 
-    @ManyToOne(targetEntity = Shop.class,fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    @JoinColumn(name = "food_shop_id")
+    @ManyToOne(targetEntity = Shop.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     public Integer getFoodId() {

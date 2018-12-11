@@ -25,7 +25,11 @@ public class HttpResponseDataUtil {
         if (sort.equals("id,desc")) {
             sort = "[{\"property\":\"id\",\"direction\":\"desc\",\"nullHandlingHint\":\"last\"}]";
         }
-
+        if (sort.equals("foodId,desc"))
+            sort = "[{\"property\":\"foodId\",\"direction\":\"desc\",\"nullHandlingHint\":\"last\"}]";
+        //下面我把这个写死
+        if (sort.length() <10)
+            sort = "[{\"property\":\"" + sort + "\",\"direction\":\"desc\",\"nullHandlingHint\":\"last\"}]";
         List<Map<String, String>> list;
         try {
             list = new ObjectMapper().readValue(sort, new TypeReference<ArrayList<Map<String, String>>>() {

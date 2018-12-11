@@ -56,4 +56,13 @@ public class UserController {
         userService.registerUserByEmail(email, userName, userTelenumber, userPhoto, password);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/update")
+    public ResponseEntity<?> update(@RequestBody JsonNode jsonNode) throws Exception {
+        String newUserName = jsonNode.path("new_user_name").textValue();
+        String imgName = jsonNode.path("img_name").textValue();
+        userService.updateUserInformation(newUserName, imgName);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
 }

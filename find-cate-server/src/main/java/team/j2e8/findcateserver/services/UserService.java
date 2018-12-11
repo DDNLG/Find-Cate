@@ -3,6 +3,7 @@ package team.j2e8.findcateserver.services;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.j2e8.findcateserver.exceptions.BusinessException;
 import team.j2e8.findcateserver.exceptions.ResourceNotFoundException;
 import team.j2e8.findcateserver.exceptions.UnAuthorizedException;
 import team.j2e8.findcateserver.infrastructure.usercontext.IdentityContext;
@@ -15,6 +16,8 @@ import team.j2e8.findcateserver.valueObjects.ErrorMessage;
 
 import javax.annotation.Resource;
 import java.util.Optional;
+
+import static team.j2e8.findcateserver.valueObjects.ErrorCode.INVALID_TOKEN;
 
 /**
  * @auther vinsonws
@@ -59,6 +62,25 @@ public class UserService {
         user.setUserPhoto(userPhoto);
         userRepository.save(parsePasswordWithSalt(user, password));
     }
+
+    public void updateUserInformation(String newUserName, String imgName){
+        User user = (User) identityContext.getIdentity();
+        if (user == null){
+            throw new BusinessException(INVALID_TOKEN, ErrorMessage.INVALID_TOKEN);
+        }
+        Optional<User> optionalUser = userRepository.findOne(qUser.id.eq(user.getId()));
+        if (optionalUser.isPresent()){
+            user = optionalUser.get();
+        } else {
+            throw new BusinessException(INVALID_TOKEN, ErrorMessage.INVALID_TOKEN);
+        }
+        if (newUserName != null)
+            user.setUserName(newUserName);
+        if (imgName != null)
+            user.setUserPhoto(imgName);
+        userRepository.save(user);
+    }
+
 
     private User verifyUserByPassword(User user, String password, String errorMessage) throws Exception {
         EnsureDataUtil.ensureNotEmptyData(password, ErrorMessage.EMPTY_PASSWORD.getMessage());

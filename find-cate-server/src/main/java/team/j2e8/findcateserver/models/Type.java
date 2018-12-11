@@ -1,5 +1,7 @@
 package team.j2e8.findcateserver.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,14 +12,13 @@ public class Type {
 
     @Id//主键
     @Column(name = "type_id")
-    @GeneratedValue//自增
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//自增
     private Integer typeId;
 
     @Column
     private String typeName;
 
-    @ManyToMany(targetEntity = Shop.class,fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Shop.class,fetch = FetchType.LAZY)
     @JoinTable(name = "type_shop", joinColumns = @JoinColumn(name = "type_id"),
             inverseJoinColumns = @JoinColumn(name = "shop_type_id"))
     private Set<Shop> shops= new HashSet<Shop>();
@@ -58,4 +59,5 @@ public class Type {
     public void setFoods(Set<Food> foods) {
         this.foods = foods;
     }
+
 }

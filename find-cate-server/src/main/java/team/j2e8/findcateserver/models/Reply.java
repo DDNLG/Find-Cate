@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Reply {
     @Id//主键
     @Column(name = "reply_id")
-    @GeneratedValue//自增
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//自增
     private Integer replyId;
 
     @Column
@@ -16,11 +16,11 @@ public class Reply {
     @Column
     private Date replyTime;
 
-    @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "reply_user_id")
     private User user;
 
-    @ManyToOne(targetEntity = Commity.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Commity.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "reply_commity_id")
     private Commity commity;
 

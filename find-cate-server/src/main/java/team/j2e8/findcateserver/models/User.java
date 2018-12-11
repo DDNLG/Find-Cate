@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-/**
- * @auther vinsonws
- * @date 2018/11/25 22:13
- */
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -41,10 +38,20 @@ public class User {
             cascade = CascadeType.ALL)
     private Set<Reply> replys = new HashSet<Reply>();
 
-    @OneToMany(targetEntity = Commity.class, mappedBy = "user",fetch=FetchType.LAZY,
+    @OneToMany( mappedBy = "user",targetEntity = Commity.class,fetch=FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Commity> commities = new HashSet<Commity>();
 
+    @OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    private Admin admin;
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
     public Integer getId() {
         return id;
