@@ -2,13 +2,13 @@ package team.j2e8.findcateserver.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import team.j2e8.findcateserver.infrastructure.ObjectSelector;
+import team.j2e8.findcateserver.models.Commity;
 import team.j2e8.findcateserver.services.CommityService;
 
 /**
@@ -27,5 +27,17 @@ public class CommityController {
         int sid = jsonNode.path("shop_id").intValue();
         commityService.insertComments(sid,comments);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/gets")
+    public ResponseEntity<?> getCommentByShopId(@RequestParam Integer shopId,
+                                                @RequestParam(value = "${spring.data.rest.page-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-number}") Integer pageNum,
+                                                @RequestParam(value = "${spring.data.rest.limit-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-size}") Integer pageSize,
+                                                @RequestParam(value = "${spring.data.rest.sort-param-name}", required = false, defaultValue = "commityId") String sort
+                                                ) throws Exception {
+
+        Page<Commity> commityPage = commityService.getCommentsByShopId(shopId, sort, pageNum, pageSize);
+        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(commityPage, "(foodId, foodName, foodPrice, foodPhoto, type(typeId, typeName))"));
     }
 }

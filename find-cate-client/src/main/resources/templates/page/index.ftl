@@ -23,6 +23,14 @@
     <link rel="stylesheet" href="css/set1.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+        });
+    </script>
 </head>
 
 <body>
@@ -33,52 +41,30 @@
                 <div class="row">
                     <div class="col-md-12">
                         <nav class="navbar navbar-expand-lg navbar-light">
-                            <a class="navbar-brand" href="index.html">Listing</a>
+                            <a class="navbar-brand" href="/index">Find Cate</a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="icon-menu"></span>
-              </button>
+                                <span class="icon-menu"></span>
+                            </button>
                             <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                                 <ul class="navbar-nav">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Explore
-                     <span class="icon-arrow-down"></span>
-                   </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Listing
-                    <span class="icon-arrow-down"></span>
-                  </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Pages
-                    <span class="icon-arrow-down"></span>
-                  </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item active">
-                                        <a class="nav-link" href="#">About</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Blog</a>
-                                    </li>
-                                    <li><a href="#" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
+                                    <#if Session.jwtToken?exists>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             用户名
+                                             <span class="icon-arrow-down"></span>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item" href="#">个人主页</a>
+                                                <!--<a class="dropdown-item" href="#"></a>-->
+                                                <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                            </div>
+                                        </li>
+                                    <#else>
+                                        <li>
+                                            <a href="/user/login" class="btn btn-outline-light top-btn"></span> 登录</a>
+                                        </li>
+                                        <li><a href="/user/register" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
+                                    </#if>
                                 </ul>
                             </div>
                         </nav>
@@ -104,7 +90,7 @@
                         </div>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-10">
-                                <form class="form-wrap mt-4" action="listing.html" method="#">
+                                <form class="form-wrap mt-4" action="listing.ftl" method="#">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <input type="text" placeholder="输入想要查找的美食" class="btn-group1">
                                         <input type="text" placeholder="成都" class="btn-group2">
@@ -225,7 +211,7 @@
             <div class="row">
                 <div class="col-md-4 featured-responsive">
                     <div class="featured-place-wrap">
-                        <a href="detail.html">
+                        <a href="detail.ftl">
                             <img src="images/featured1.jpg" class="img-fluid" alt="#">
                             <span class="featured-rating-orange">6.5</span>
                             <div class="featured-title-box">
@@ -256,7 +242,7 @@
                 </div>
                 <div class="col-md-4 featured-responsive">
                     <div class="featured-place-wrap">
-                        <a href="detail.html">
+                        <a href="detail.ftl">
                             <img src="images/featured2.jpg" class="img-fluid" alt="#">
                             <span class="featured-rating-green">9.5</span>
                             <div class="featured-title-box">
@@ -287,7 +273,7 @@
                 </div>
                 <div class="col-md-4 featured-responsive">
                     <div class="featured-place-wrap">
-                        <a href="detail.html">
+                        <a href="detail.ftl">
                             <img src="images/featured3.jpg" class="img-fluid" alt="#">
                             <span class="featured-rating">3.2</span>
                             <div class="featured-title-box">

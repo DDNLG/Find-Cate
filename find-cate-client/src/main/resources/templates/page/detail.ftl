@@ -14,21 +14,47 @@
     <!-- Page Title -->
     <title>Listing &amp; Directory Website Template</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <!-- Simple line Icon -->
-    <link rel="stylesheet" href="css/simple-line-icons.css">
+    <link rel="stylesheet" href="/css/simple-line-icons.css">
     <!-- Themify Icon -->
-    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="/css/themify-icons.css">
     <!-- Hover Effects -->
-    <link rel="stylesheet" href="css/set1.css">
+    <link rel="stylesheet" href="/css/set1.css">
     <!-- Swipper Slider -->
-    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
     <!-- Magnific Popup CSS -->
-    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            GetTheShopInformation();
+        });
+        function GetTheShopInformation() {
+            $.ajax({
+                url:"${backserver}/shop/getone?shopId=${shopId}",
+                type: 'get',
+                contentType: 'application/json',
+                success: function (data) {
+                    var json = eval(data);
+                    $("#shop_name").text(json.content[0].shopName);
+                    $("#shop_address").text(json.content[0].shopAddress);
+                    $("#shop_telenumber").text(json.content[0].shopTelenumber)
+                }
+            })
+        }
+        function GetCommityList() {
+            $.ajax({
+                url:"${backserver}/shop/getone?shopId=${shopId}",
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -38,7 +64,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="index.html">Listing</a>
+                        <a class="navbar-brand" href="/index">Find Cate</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="icon-menu"></span>
             </button>
@@ -46,44 +72,20 @@
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   Explore
-                   <span class="icon-arrow-down"></span>
-                 </a>
+                                        用户名
+                                        <span class="icon-arrow-down"></span>
+                                    </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="#">个人主页</a>
+                                        <!--<a class="dropdown-item" href="#"></a>-->
+                                        <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Listing
-                  <span class="icon-arrow-down"></span>
-                </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
+
+                                <li>
+                                    <a href="/user/login" class="btn btn-outline-light top-btn"></span> 登录</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Pages
-                  <span class="icon-arrow-down"></span>
-                </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="#">About</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Blog</a>
-                                </li>
-                                <li><a href="#" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> Add Listing</a></li>
+                                <li><a href="/user/register" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -99,33 +101,33 @@
             <div class="swiper-wrapper">
 
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide2.jpg" class="grid image-link">
-                        <img src="images/reserve-slide2.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide2.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide2.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide1.jpg" class="grid image-link">
-                        <img src="images/reserve-slide1.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide1.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide1.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide3.jpg" class="grid image-link">
-                        <img src="images/reserve-slide3.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide3.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide3.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide1.jpg" class="grid image-link">
-                        <img src="images/reserve-slide1.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide1.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide1.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide2.jpg" class="grid image-link">
-                        <img src="images/reserve-slide2.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide2.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide2.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="images/reserve-slide3.jpg" class="grid image-link">
-                        <img src="images/reserve-slide3.jpg" class="img-fluid" alt="#">
+                    <a href="/images/reserve-slide3.jpg" class="grid image-link">
+                        <img src="/images/reserve-slide3.jpg" class="img-fluid" alt="#">
                     </a>
                 </div>
             </div>
@@ -142,7 +144,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Tasty Hand-Pulled Noodles</h5>
+                    <h5 id="shop_name">Tasty Hand-Pulled Noodles</h5>
                     <p><span>$$$</span>$$</p>
                     <p class="reserve-description">Innovative cooking, paired with fine wines in a modern setting.</p>
                 </div>
@@ -153,7 +155,7 @@
                         </div>
                         <div class="review-btn">
                             <a href="#" class="btn btn-outline-danger">WRITE A REVIEW</a>
-                            <span>34 reviews</span>
+                            <span id="commity_total">34 reviews</span>
                         </div>
                         <div class="reserve-btn">
                             <div class="featured-btn-wrap">
@@ -217,13 +219,12 @@
                         </div>
                     </div>
                     <div class="booking-checkbox_wrap mt-4">
-                        <h5>34 Reviews</h5>
+                        <h5 id="commity_total">34 Reviews</h5>
                         <hr>
                         <div class="customer-review_wrap">
                             <div class="customer-img">
-                                <img src="images/customer-img1.jpg" class="img-fluid" alt="#">
+                                <img src="/images/customer-img1.jpg" class="img-fluid" alt="#">
                                 <p>Amanda G</p>
-                                <span>35 Reviews</span>
                             </div>
                             <div class="customer-content-wrap">
                                 <div class="customer-content">
@@ -246,53 +247,27 @@
                                     to bring cash.
                                 </p>
                                 <ul>
-                                    <li><img src="images/review-img1.jpg" class="img-fluid" alt="#"></li>
-                                    <li><img src="images/review-img2.jpg" class="img-fluid" alt="#"></li>
-                                    <li><img src="images/review-img3.jpg" class="img-fluid" alt="#"></li>
+                                    <li><img src="/images/review-img1.jpg" class="img-fluid" alt="#"></li>
+                                    <li><img src="/images/review-img2.jpg" class="img-fluid" alt="#"></li>
+                                    <li><img src="/images/review-img3.jpg" class="img-fluid" alt="#"></li>
                                 </ul>
                                 <span>28 people marked this review as helpful</span>
                                 <a href="#"><span class="icon-like"></span>Helpful</a>
                             </div>
                         </div>
                         <hr>
-                        <div class="customer-review_wrap">
-                            <div class="customer-img">
-                                <img src="images/customer-img2.jpg" class="img-fluid" alt="#">
-                                <p>Kevin W</p>
-                                <span>17 Reviews</span>
-                            </div>
-                            <div class="customer-content-wrap">
-                                <div class="customer-content">
-                                    <div class="customer-review">
-                                        <h6>A hole-in-the-wall old school shop.</h6>
-                                        <span class="customer-rating-red"></span>
-                                        <span class="round-icon-blank"></span>
-                                        <span class="round-icon-blank"></span>
-                                        <span class="round-icon-blank"></span>
-                                        <span class="round-icon-blank"></span>
-                                        <p>Reviewed 3 months ago</p>
-                                    </div>
-                                    <div class="customer-rating customer-rating-red">2.0</div>
-                                </div>
-                                <p class="customer-text">The dumplings were so greasy...the pan-fried shrimp noodles were the same. So much oil and grease it was difficult to eat. The shrimp noodles only come with 3 shrimp (luckily the dish itself is cheap) </p>
-                                <p class="customer-text">The beef noodle soup was okay. I added black vinegar into the broth to give it some extra flavor. The soup has bok choy which I liked - it's a nice textural element. The shop itself is really unclean (which is the case
-                                    in many restaurants in Chinatown) They don't wipe down the tables after customers have eaten. If you peak into the kitchen many of their supplies are on the ground which is unsettling... </p>
-                                <span>10 people marked this review as helpful</span>
-                                <a href="#"><span class="icon-like"></span>Helpful</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-4 responsive-wrap">
                     <div class="contact-info">
-                        <img src="images/map.jpg" class="img-fluid" alt="#">
+                        <!--<img src="/images/map.jpg" class="img-fluid" alt="#">-->
                         <div class="address">
                             <span class="icon-location-pin"></span>
-                            <p> Doyers St<br> New York, NY 10013<br> b/t Division St & St James Pl <br> Chinatown, Civic Center</p>
+                            <p id="shop_address"> Doyers St<br> New York, NY 10013<br> b/t Division St & St James Pl <br> Chinatown, Civic Center</p>
                         </div>
                         <div class="address">
                             <span class="icon-screen-smartphone"></span>
-                            <p> +44 20 7336 8898</p>
+                            <p id="shop_telenumber"> +44 20 7336 8898</p>
                         </div>
                         <div class="address">
                             <span class="icon-link"></span>
@@ -303,29 +278,29 @@
                             <p>Mon - Sun 09:30 am - 05:30 pm <br>
                                 <span class="open-now">OPEN NOW</span></p>
                         </div>
-                        <a href="#" class="btn btn-outline-danger btn-contact">SEND A MESSAGE</a>
+                        <!--<a href="#" class="btn btn-outline-danger btn-contact">SEND A MESSAGE</a>-->
                     </div>
                     <div class="follow">
                         <div class="follow-img">
-                            <img src="images/follow-img.jpg" class="img-fluid" alt="#">
+                            <img src="/images/follow-img.jpg" class="img-fluid" alt="#">
                             <h6>Christine Evans</h6>
                             <span>New York</span>
                         </div>
-                        <ul class="social-counts">
-                            <li>
-                                <h6>26</h6>
-                                <span>Listings</span>
-                            </li>
-                            <li>
-                                <h6>326</h6>
-                                <span>Followers</span>
-                            </li>
-                            <li>
-                                <h6>12</h6>
-                                <span>Followers</span>
-                            </li>
-                        </ul>
-                        <a href="#">FOLLOW</a>
+                        <!--<ul class="social-counts">-->
+                            <!--<li>-->
+                                <!--<h6>26</h6>-->
+                                <!--<span>Listings</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<h6>326</h6>-->
+                                <!--<span>Followers</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<h6>12</h6>-->
+                                <!--<span>Followers</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                        <!--<a href="#">FOLLOW</a>-->
                     </div>
                 </div>
             </div>
@@ -358,13 +333,13 @@
 
     <!-- jQuery, Bootstrap JS. -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- Magnific popup JS -->
-    <script src="js/jquery.magnific-popup.js"></script>
+    <script src="/js/jquery.magnific-popup.js"></script>
     <!-- Swipper Slider JS -->
-    <script src="js/swiper.min.js"></script>
+    <script src="/js/swiper.min.js"></script>
     <script>
         var swiper = new Swiper('.swiper-container', {
             slidesPerView: 3,
