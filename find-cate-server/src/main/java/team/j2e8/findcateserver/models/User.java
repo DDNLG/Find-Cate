@@ -28,6 +28,10 @@ public class User {
     private String userPhoto;
     @Column
     private String userEmail;
+    @Column
+    private String userPassword;
+    @Column
+    private String userSalt;
 
     @OneToMany(mappedBy = "user",targetEntity = Shop.class,fetch=FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -104,5 +108,21 @@ public class User {
 
     public void setCommities(Set<Commity> commities) {
         this.commities = commities;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public String getUserSalt() {
+        return userSalt;
+    }
+
+    public void setUserSalt(String userSalt) {
+        this.userSalt = userSalt;
     }
 }

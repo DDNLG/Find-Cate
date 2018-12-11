@@ -27,7 +27,7 @@ import java.util.Map;
 //生成安全凭据
 @Service
 public class JwtHelper {
-    @Resource(name = "tokenBasedIdentityContext")
+    @Resource(name = "tokenIdentityContext")
     private IdentityContext identityContext;
 
     //生成token的帮助函数
@@ -42,7 +42,7 @@ public class JwtHelper {
         long expMillis = nowMillis + expiredMillis;
         Date exp = new Date(expMillis);
         //序列化待优化
-        String select = "student(id,name,account(id,login_name,mobile))";
+        String select = "user(id,userName,userTelenumber,userPhoto,userEmail)";
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                 .setIssuer(issuer)
