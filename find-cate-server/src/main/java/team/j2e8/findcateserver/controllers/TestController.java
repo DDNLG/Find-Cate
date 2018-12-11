@@ -1,6 +1,7 @@
 package team.j2e8.findcateserver.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ import team.j2e8.findcateserver.models.Shop;
 import team.j2e8.findcateserver.models.User;
 import team.j2e8.findcateserver.repositories.ShopRepository;
 import team.j2e8.findcateserver.repositories.UserRepository;
+import team.j2e8.findcateserver.utils.HttpResponseDataUtil;
+
+import java.util.Optional;
 
 /**
  * @auther vinsonws
@@ -32,17 +36,17 @@ public class TestController {
 
     private final QShop qShop = QShop.shop;
     @RequestMapping(method = RequestMethod.GET, value = "/test")
-    public void test() throws Exception {
-        User user = new User();
-        user.setId(2);
-        user.setUserEmail("adss@qq.com");
-        user.setUserName("zwsss");
-        user.setUserTelenumber("31231");
-        user.setUserPhoto("sadaasasd");
+    public void test() {
+//        User user = new User();
+//        user.setId(8);
+//        user.setUserEmail("adsss@qq.com");
+//        user.setUserName("zwssss");
+//        user.setUserTelenumber("31231");
+//        user.setUserPhoto("sadaasasd");
+        Optional<User> user = userRepository.findOne(new BooleanBuilder().and(qUser.id.eq(8)));
         Shop shop = new Shop();
         shop.setShopAddress("sadsad");
-        shop.setShopId(1);
-        shop.setUser(user);
+        shop.setUser(user.get());
         shopRepository.save(shop);
     }
 }
