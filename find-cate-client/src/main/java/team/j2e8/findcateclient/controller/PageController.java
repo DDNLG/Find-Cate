@@ -35,6 +35,7 @@ public class PageController {
     public ModelAndView login(@RequestParam(required = false) String jwtToken,HttpServletRequest request){
         if (jwtToken != null)
             request.getSession().setAttribute("jwtToken", jwtToken);
+        //return new ModelAndView("forward:/index");
         return new ModelAndView("redirect:/index");
     }
 
