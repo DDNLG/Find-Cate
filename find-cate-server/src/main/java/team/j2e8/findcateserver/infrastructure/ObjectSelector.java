@@ -31,7 +31,7 @@ public class ObjectSelector extends AliasResolver {
         for (Object object : objects) {
             mappedObjects.add(this.mapObject(object, expression));
         }
-        return new PageImpl<>(mappedObjects, new PageRequest(objects.getNumber(),
+        return new PageImpl<>(mappedObjects, PageRequest.of(objects.getNumber(),
                 objects.getSize(), objects.getSort()), objects.getTotalElements());
     }
 

@@ -403,7 +403,7 @@
                 <div class="col-md-12">
                     <div class="copyright">
                         
-                        <p>网络162张文森组&nbsp&nbsp&nbsp&nbsp<a href="http://www.cssmoban.com/" target="_blank" title="关于我们">关于我们
+                        <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们
                         
                         <ul>
                             <li><a href="#"><span class="ti-facebook"></span></a></li>

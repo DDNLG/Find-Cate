@@ -51,4 +51,10 @@ public class PageController {
         return new ModelAndView("/page/register")
                 .addObject("backserver", backendServer);
     }
+
+    @RequestMapping(value = "/list")
+    public ModelAndView list(){
+        return new ModelAndView("/page/listing")
+                .addObject("backserver", backendServer);
+    }
 }

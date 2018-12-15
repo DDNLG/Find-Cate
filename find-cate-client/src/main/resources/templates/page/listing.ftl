@@ -25,6 +25,91 @@
     <link rel="stylesheet" href="css/set1.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            GetShopList();
+        });
+        function GetShopList() {
+            $.ajax({
+                url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat"),
+                type: 'get',
+                contentType: 'application/json',
+                success:function (data) {
+                    var json = eval(data);
+                    createShopElement(json);
+                }
+            })
+        }
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+        function createShopElement(data) {
+            var modelList = data.numberOfElements;
+            var shops = data.content;
+            if(modelList>0){
+
+                for(var i=0; i<modelList; i++){
+                    // var option="<option value=\""+modelList[i].modelId+"\"";
+                    // if(_LastModelId && _LastModelId==modelList[i].modelId){
+                    //     option += " selected=\"selected\" "; //默认选中
+                    //     _LastModelId=null;
+                    // }
+                    var value ="<div class=\"col-sm-6 col-lg-12 col-xl-6 featured-responsive\" >" +
+                            "                       <div class=\"featured-place-wrap\">" +
+                            "                                <a href=\"/shop/page?shopId="+shops[i].shopId+"\">" +
+                            "                                    <img src=\"http://vinsonws.xin:7888/65636438_p0_master1200.jpg\" class=\"img-fluid\" alt=\"#\">" +
+                            "                                    <span class=\"featured-rating-orange \">6.5</span>" +
+                            "                                    <div class=\"featured-title-box\">" +
+                            "                                        <h6>"+shops[i].shopName+"</h6>" +
+                            "                                        <p>Restaurant </p> <span>• </span>" +
+                            "                                        <p>3 Reviews</p> <span> • </span>" +
+                            "                                        <p><span>$$$</span>$$</p>" +
+                            "                                        <ul>" +
+                            "                                            <li><span class=\"icon-location-pin\"></span>" +
+                            "                                                <p>"+ shops[i].shopAddress+"</p>" +
+                            "                                            </li>" +
+                            "                                            <li><span class=\"icon-screen-smartphone\"></span>" +
+                            "                                                <p>"+ shops[i].shopTelenumber+"</p>" +
+                            "                                            </li>" +
+                            "                                            <li><span class=\"icon-link\"></span>" +
+                            "                                                <p>https://burgerandlobster.com</p>" +
+                            "                                            </li>" +
+                            "                                        </ul>" +
+                            "                                        <div class=\"bottom-icons\">\n" +
+                            "                                            <div class=\"open-now\">OPEN NOW</div>\n" +
+                            "                                            <span class=\"ti-heart\"></span>\n" +
+                            "                                            <span class=\"ti-bookmark\"></span>\n" +
+                            "                                        </div>" +
+                            "                                    </div>" +
+                            "                                </a>" +
+                            "                            </div></div>";
+                    $("#shoplist").append(value);
+
+                    //addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat));
+                    // addMarker(new BMap.Point(0, 0));
+                    if (i == 0) {
+                        var point = new BMap.Point(shops[i].shopLng, shops[i].shopLat);
+                        map.centerAndZoom(point, 9);
+                        // 编写自定义函数,创建标注
+                        var marker = new BMap.Marker(point);
+                        map.addOverlay(marker);
+                        var content="商铺名称：" + shops[i].shopName +"<br>商铺地址："+shops[i].shopAddress+"<br>商铺电话："+shops[i].shopTelenumber+"";
+                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),shops[i].shopName,content);
+                        // var label = new BMap.Label(shops[i].shopName,{offset:new BMap.Size(20,-10)});
+                        // marker.setLabel(label);
+                    } else {
+                        var content="商铺名称：" + shops[i].shopName +"<br>商铺地址："+shops[i].shopAddress+"<br>商铺电话："+shops[i].shopTelenumber+"";
+                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),shops[i].shopName,content);
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -34,52 +119,30 @@
             <div class="row">
                 <div class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="/index">Listing</a>
+                        <a class="navbar-brand" href="/index">Find Cate</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="icon-menu"></span>
-            </button>
+                          <span class="icon-menu"></span>
+                        </button>
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   Explore
-                   <span class="icon-arrow-down"></span>
-                 </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Listing
-                  <span class="icon-arrow-down"></span>
-                </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Pages
-                  <span class="icon-arrow-down"></span>
-                </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="#">About</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Blog</a>
-                                </li>
-                                <li><a href="#" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> Add Listing</a></li>
+                                <#if Session.jwtToken?exists>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            用户名
+                                            <span class="icon-arrow-down"></span>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item" href="#">个人主页</a>
+                                            <!--<a class="dropdown-item" href="#"></a>-->
+                                            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                        </div>
+                                    </li>
+                                <#else>
+                                        <li>
+                                            <a href="/user/login" class="btn btn-outline-light top-btn"></span> 登录</a>
+                                        </li>
+                                        <li><a href="/user/register" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
+                                </#if>
                             </ul>
                         </div>
                     </nav>
@@ -104,19 +167,19 @@
                                 <p>Filter by</p>
                                 <form class="filter-dropdown">
                                     <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">
-                  <option selected>Best Match</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                                      <option selected>Best Match</option>
+                                      <option value="1">One</option>
+                                      <option value="2">Two</option>
+                                      <option value="3">Three</option>
+                                    </select>
                                 </form>
                                 <form class="filter-dropdown">
                                     <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect1">
-                  <option selected>Restaurants</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                                      <option selected>Restaurants</option>
+                                      <option value="1">One</option>
+                                      <option value="2">Two</option>
+                                      <option value="3">Three</option>
+                                    </select>
                                 </form>
                                 <div class="map-responsive-wrap">
                                     <a class="map-icon" href="#"><span class="icon-location-pin"></span></a>
@@ -128,148 +191,55 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
 
                             <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Bike Parking</span>
-              </label>
+                                <input type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Bike Parking</span>
+                              </label>
                         </div>
                         
                         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
 
                             <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Pets Friendly</span>
-              </label>
+                                <input type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Pets Friendly</span>
+                            </label>
 
                         </div>
                     </div>
-                    <div class="row light-bg detail-options-wrap">
-                        <div class="col-sm-6 col-lg-12 col-xl-6 featured-responsive">
-                            <div class="featured-place-wrap">
-                                <a href="detail.ftl">
-                                    <img src="images/featured1.jpg" class="img-fluid" alt="#">
-                                    <span class="featured-rating-orange ">6.5</span>
-                                    <div class="featured-title-box">
-                                        <h6>Burger &amp; Lobster</h6>
-                                        <p>Restaurant </p> <span>• </span>
-                                        <p>3 Reviews</p> <span> • </span>
-                                        <p><span>$$$</span>$$</p>
-                                        <ul>
-                                            <li><span class="icon-location-pin"></span>
-                                                <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                            </li>
-                                            <li><span class="icon-screen-smartphone"></span>
-                                                <p>+44 20 7336 8898</p>
-                                            </li>
-                                            <li><span class="icon-link"></span>
-                                                <p>https://burgerandlobster.com</p>
-                                            </li>
+                    <div class="row light-bg detail-options-wrap" id="shoplist">
+                        <#--<div class="col-sm-6 col-lg-12 col-xl-6 featured-responsive" >-->
+                            <#--<div class="featured-place-wrap">-->
+                                <#--<a href="/shop/page?shopId=">-->
+                                    <#--<img src="images/featured1.jpg" class="img-fluid" alt="#">-->
+                                    <#--<span class="featured-rating-orange ">6.5</span>-->
+                                    <#--<div class="featured-title-box">-->
+                                        <#--<h6>Burger &amp; Lobster</h6>-->
+                                        <#--<p>Restaurant </p> <span>• </span>-->
+                                        <#--<p>3 Reviews</p> <span> • </span>-->
+                                        <#--<p><span>$$$</span>$$</p>-->
+                                        <#--<ul>-->
+                                            <#--<li><span class="icon-location-pin"></span>-->
+                                                <#--<p>1301 Avenue, Brooklyn, NY 11230</p>-->
+                                            <#--</li>-->
+                                            <#--<li><span class="icon-screen-smartphone"></span>-->
+                                                <#--<p>+44 20 7336 8898</p>-->
+                                            <#--</li>-->
+                                            <#--<li><span class="icon-link"></span>-->
+                                                <#--<p>https://burgerandlobster.com</p>-->
+                                            <#--</li>-->
 
-                                        </ul>
-                                        <div class="bottom-icons">
-                                            <div class="closed-now">CLOSED NOW</div>
-                                            <span class="ti-heart"></span>
-                                            <span class="ti-bookmark"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-12 col-xl-6 featured-responsive">
-                            <div class="featured-place-wrap">
-                                <a href="detail.ftl">
-                                    <img src="images/featured2.jpg" class="img-fluid" alt="#">
-                                    <span class="featured-rating-green">9.5</span>
-                                    <div class="featured-title-box">
-                                        <h6>Joe’s Shanghai</h6>
-                                        <p>Restaurant </p> <span>• </span>
-                                        <p>3 Reviews</p> <span> • </span>
-                                        <p><span>$$$</span>$$</p>
-                                        <ul>
-                                            <li><span class="icon-location-pin"></span>
-                                                <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                            </li>
-                                            <li><span class="icon-screen-smartphone"></span>
-                                                <p>+44 20 7336 8898</p>
-                                            </li>
-                                            <li><span class="icon-link"></span>
-                                                <p>https://burgerandlobster.com</p>
-                                            </li>
+                                        <#--</ul>-->
+                                        <#--<div class="bottom-icons">-->
+                                            <#--<div class="closed-now">CLOSED NOW</div>-->
+                                            <#--<span class="ti-heart"></span>-->
+                                            <#--<span class="ti-bookmark"></span>-->
+                                        <#--</div>-->
+                                    <#--</div>-->
+                                <#--</a>-->
+                            <#--</div>-->
+                        <#--</div>-->
 
-                                        </ul>
-                                        <div class="bottom-icons">
-                                            <div class="open-now">OPEN NOW</div>
-                                            <span class="ti-heart"></span>
-                                            <span class="ti-bookmark"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-lg-12 col-xl-6 featured-responsive">
-                            <div class="featured-place-wrap">
-                                <a href="detail.ftl">
-                                    <img src="images/featured3.jpg" class="img-fluid" alt="#">
-                                    <span class="featured-rating">3.2</span>
-                                    <div class="featured-title-box">
-                                        <h6>Tasty Hand-Pulled Noodles</h6>
-                                        <p>Restaurant </p> <span>• </span>
-                                        <p>3 Reviews</p> <span> • </span>
-                                        <p><span>$$$</span>$$</p>
-                                        <ul>
-                                            <li><span class="icon-location-pin"></span>
-                                                <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                            </li>
-                                            <li><span class="icon-screen-smartphone"></span>
-                                                <p>+44 20 7336 8898</p>
-                                            </li>
-                                            <li><span class="icon-link"></span>
-                                                <p>https://burgerandlobster.com</p>
-                                            </li>
-
-                                        </ul>
-                                        <div class="bottom-icons">
-                                            <div class="closed-now">CLOSED NOW</div>
-                                            <span class="ti-heart"></span>
-                                            <span class="ti-bookmark"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-12 col-xl-6 featured-responsive">
-                            <div class="featured-place-wrap">
-                                <a href="detail.ftl">
-                                    <img src="images/featured4.jpg" class="img-fluid" alt="#">
-                                    <span class="featured-rating-green">9.5</span>
-                                    <div class="featured-title-box">
-                                        <h6>Pizza - Cicis</h6>
-                                        <p>Restaurant </p> <span>• </span>
-                                        <p>3 Reviews</p> <span> • </span>
-                                        <p><span>$$$</span>$$</p>
-                                        <ul>
-                                            <li><span class="icon-location-pin"></span>
-                                                <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                            </li>
-                                            <li><span class="icon-screen-smartphone"></span>
-                                                <p>+44 20 7336 8898</p>
-                                            </li>
-                                            <li><span class="icon-link"></span>
-                                                <p>https://burgerandlobster.com</p>
-                                            </li>
-
-                                        </ul>
-                                        <div class="bottom-icons">
-                                            <div class="closed-now">CLOSED NOW</div>
-                                            <span class="ti-heart"></span>
-                                            <span class="ti-bookmark"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-5 responsive-wrap map-wrap">
@@ -289,8 +259,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="copyright">
-                        
-                        <p>Copyright &copy; 2018 Listing. All rights reserved | made with Colorlib -  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+
+                        <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们</a></p>
                         
                         <ul>
                             <li><a href="#"><span class="ti-facebook"></span></a></li>
@@ -315,37 +285,76 @@
 
 
     <script>
-        $(".map-icon").click(function() {
-            $(".map-fix").toggle();
-        });
+        // $(".map-icon").click(function() {
+        //     $(".map-fix").toggle();
+        // });
     </script>
     <script>
         // Want to customize colors? go to snazzymaps.com
+
         function myMap() {
-            var maplat = $('#map').data('lat');
-            var maplon = $('#map').data('lon');
-            var mapzoom = $('#map').data('zoom');
+            // var maplat = $('#map').data('lat');
+            // var maplon = $('#map').data('lon');
+            // var mapzoom = $('#map').data('zoom');
+            map = new BMap.Map("map");
+
+
+            // 随机向地图添加25个标注
+            // var bounds = map.getBounds();
+            // var sw = bounds.getSouthWest();
+            // var ne = bounds.getNorthEast();
+            // var lngSpan = Math.abs(sw.lng - ne.lng);
+            // var latSpan = Math.abs(ne.lat - sw.lat);
+            // for (var i = 0; i < 25; i ++) {
+            //     var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+            //     addMarker(point);
+            // }
             // Styles a map in night mode.
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: maplat,
-                    lng: maplon
-                },
-                zoom: mapzoom,
-                scrollwheel: false
-            });
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: maplat,
-                    lng: maplon
-                },
-                map: map,
-                title: 'We are here!'
-            });
+            // var map = new google.maps.Map(document.getElementById('map'), {
+            //     center: {
+            //         lat: maplat,
+            //         lng: maplon
+            //     },
+            //     zoom: mapzoom,
+            //     scrollwheel: false
+            // });
+            // var marker = new google.maps.Marker({
+            //     position: {
+            //         lat: maplat,
+            //         lng: maplon
+            //     },
+            //     map: map,
+            //     title: 'We are here!'
+            // });
+        }
+        function addMarker(point, shopName, content){
+            var label = new BMap.Label(shopName,{offset:new BMap.Size(20,-10)});
+            var marker = new BMap.Marker(point);
+            map.addOverlay(marker);
+            marker.setLabel(label);
+            addClickHandler(content,marker);
+        }
+        function addClickHandler(content,marker){
+            marker.addEventListener("click",function(e){
+                openInfo(content,e)}
+            );
+        }
+        function openInfo(content,e){
+            var opts = {
+                width : 250,     // 信息窗口宽度
+                height: 80,     // 信息窗口高度
+                //title : "商铺" , // 信息窗口标题
+                enableMessage:true//设置允许信息窗发送短息
+            };
+            var p = e.target;
+            var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+            var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
         }
     </script>
     <!-- Map JS (Please change the API key below. Read documentation for more info) -->
-    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDMTUkJAmi1ahsx9uCGSgmcSmqDTBF9ygg"></script>
+    <#--<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDMTUkJAmi1ahsx9uCGSgmcSmqDTBF9ygg"></script>-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mdOAAKh0CVM7V6buxZuOhhEPIstA4Gfp&callback=myMap"></script>
 </body>
 
 </html>

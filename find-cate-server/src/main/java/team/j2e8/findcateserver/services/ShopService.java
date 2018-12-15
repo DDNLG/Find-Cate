@@ -1,8 +1,9 @@
 package team.j2e8.findcateserver.services;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import team.j2e8.findcateserver.infrastructure.usercontext.IdentityContext;
 import team.j2e8.findcateserver.models.*;
@@ -116,5 +117,28 @@ public class ShopService {
         Shop shop = shops.get();
         shop.setShopActive(1);
         shopRepository.save(shop);
+    }
+
+    public Page<Shop> getShopsByCondition(Double lng, Double lat, String name, String type, int pageNum, int pageSize){
+        if (lng == null || lat == null) throw  new NullPointerException("经纬度不为空");
+        pageNum = pageNum * pageSize;
+//        JPAQueryFactory queryFactory = new JPAQueryFactory();
+        BooleanBuilder booleanBuilder = new BooleanBuilder()
+                .and(qShop.shopActive.eq(1))
+                .and(qShop.shopLng.between(lng, lng+1))
+                .and(qShop.shopLng.between(lng-1, lng))
+                .and(qShop.shopLat.between(lat, lat+1))
+                .and(qShop.shopLat.between(lat-1, lat));
+        if (name != null) booleanBuilder.and(qShop.shopName.like("%"+name+"%"));
+//        if (type != null) booleanBuilder.and(qSho)  //类型
+
+//        return shopRepository.findAll(booleanBuilder, HttpResponseDataUtil.sortAndPagingByLatAndLng(lng, lat, pageNum, pageSize));
+        List<Shop> shops =shopRepository.findByLngAndLat(lng, lat,pageNum,pageSize);
+
+        return listToPage(shops, pageNum, pageSize);
+    }
+
+    private Page<Shop> listToPage(List<Shop> shops, int pageNum, int pageSize){
+        return new PageImpl<Shop>(shops,PageRequest.of(pageNum, pageSize),shops.size());
     }
 }

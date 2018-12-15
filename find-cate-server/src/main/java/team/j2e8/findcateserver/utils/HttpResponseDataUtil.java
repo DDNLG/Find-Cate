@@ -20,6 +20,14 @@ public class HttpResponseDataUtil {
         return PageRequest.of(pageNum, pageSize, customSort);
     }
 
+    public static Pageable sortAndPagingByLatAndLng(Double lng, Double lat, int pageNum, int pageSize){
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.ASC,
+                "ACOS(SIN(("+lat+" * 3.1415) / 180 ) *SIN((shop_lat * 3.1415) / 180 ) + " +
+                        "COS(("+lat+" * 3.1415) / 180 ) * COS((shop_lat * 3.1415) / 180 ) * COS(("+lng+"* 3.1415) / 180 - " +
+                        "(shop_lng * 3.1415) / 180 ) ) * 6380"));
+        return PageRequest.of(pageNum, pageSize, sort);
+    }
+
     private static List<Sort.Order> getSort(String sort) {
         // 兼容以前的接口
         if (sort.equals("id,desc")) {
@@ -46,6 +54,6 @@ public class HttpResponseDataUtil {
     }
 
     public static Pageable paging(int pageNum, int pageSize) {
-        return new PageRequest(pageNum, pageSize);
+        return  PageRequest.of(pageNum, pageSize);
     }
 }
