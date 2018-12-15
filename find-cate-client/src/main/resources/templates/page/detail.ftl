@@ -70,22 +70,24 @@
             </button>
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        用户名
-                                        <span class="icon-arrow-down"></span>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#">个人主页</a>
-                                        <!--<a class="dropdown-item" href="#"></a>-->
-                                        <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <a href="/user/login" class="btn btn-outline-light top-btn"></span> 登录</a>
-                                </li>
-                                <li><a href="/user/register" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
+                                <#if Session.jwtToken?exists>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            用户名
+                                            <span class="icon-arrow-down"></span>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item" href="#">个人主页</a>
+                                            <!--<a class="dropdown-item" href="#"></a>-->
+                                            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                        </div>
+                                    </li>
+                                <#else>
+                                        <li>
+                                            <a href="/user/login" class="btn btn-outline-light top-btn"></span> 登录</a>
+                                        </li>
+                                        <li><a href="/user/register" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> 注册</a></li>
+                                </#if>
                             </ul>
                         </div>
                     </nav>
