@@ -54,6 +54,21 @@
                 url:"${backserver}/shop/getone?shopId=${shopId}",
             })
         }
+        function GetUserInfomation() {
+            $.ajax({
+                url:"${backserver}/user/info",
+                type: "get",
+                contentType: 'application/json',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Jwt-Token","${jwtToken}");
+                },
+                success: function(data){
+                    var json = eval(data);
+                    $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
+                    $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                }
+            })
+        }
     </script>
 </head>
 
@@ -71,13 +86,18 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
                                 <#if Session.jwtToken?exists>
+                                    <script>
+                                        $(document).ready(function(){
+                                            GetUserInfomation();
+                                        });
+                                    </script>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="#">个人主页</a>
+                                            <a class="dropdown-item" id="userpage" href="/user/info">个人主页</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>

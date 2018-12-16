@@ -17,18 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 public class PageController {
     @Value("${back-end.server}")
     private String backendServer;
+    @Value("${image.server}")
+    private String imgServer;
 
     @RequestMapping(value = "/index")
     public ModelAndView index(){
 
         return new ModelAndView("/page/index")
-                .addObject("backserver", backendServer);
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/user/login")
     public ModelAndView login(){
         return new ModelAndView("/page/login")
-                .addObject("backserver", backendServer);
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/user/afterlogin")
@@ -44,18 +48,49 @@ public class PageController {
 
         return new ModelAndView("/page/detail")
                 .addObject("shopId", shopId)
-                .addObject("backserver", backendServer);
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/user/register")
     public ModelAndView register(){
         return new ModelAndView("/page/register")
-                .addObject("backserver", backendServer);
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+
+    @RequestMapping(value = "/user/info")
+    public ModelAndView userInfortaion(HttpServletRequest request){
+//        if (request.getSession().getAttribute("jwtToken") == null){
+//            return new ModelAndView("redirect:/user/login");
+//        }else {
+//            return new ModelAndView("/page/userinfo")
+//                    .addObject("backserver", backendServer)
+//                    .addObject("imgserver", imgServer);
+//        }
+        return new ModelAndView("/page/userinfo")
+                    .addObject("backserver", backendServer)
+                    .addObject("imgserver", imgServer);
+    }
+
+    @RequestMapping(value = "/user/edit")
+    public ModelAndView editUserInfortaion(HttpServletRequest request){
+//        if (request.getSession().getAttribute("jwtToken") == null){
+//            return new ModelAndView("redirect:/user/login");
+//        }else {
+//            return new ModelAndView("/page/userinfo")
+//                    .addObject("backserver", backendServer)
+//                    .addObject("imgserver", imgServer);
+//        }
+        return new ModelAndView("/page/editinfo")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/list")
     public ModelAndView list(){
         return new ModelAndView("/page/listing")
-                .addObject("backserver", backendServer);
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
     }
 }

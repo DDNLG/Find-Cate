@@ -132,7 +132,7 @@
                                             <span class="icon-arrow-down"></span>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="#">个人主页</a>
+                                            <a class="dropdown-item" href="/user/info">个人主页</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>

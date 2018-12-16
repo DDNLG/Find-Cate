@@ -2,6 +2,7 @@ package team.j2e8.findcateserver.services;
 
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import team.j2e8.findcateserver.exceptions.BusinessException;
 import team.j2e8.findcateserver.exceptions.ResourceNotFoundException;
@@ -12,6 +13,7 @@ import team.j2e8.findcateserver.models.User;
 import team.j2e8.findcateserver.repositories.UserRepository;
 import team.j2e8.findcateserver.utils.Encryption;
 import team.j2e8.findcateserver.utils.EnsureDataUtil;
+import team.j2e8.findcateserver.utils.HttpResponseDataUtil;
 import team.j2e8.findcateserver.valueObjects.ErrorMessage;
 
 import javax.annotation.Resource;
@@ -74,11 +76,22 @@ public class UserService {
         } else {
             throw new BusinessException(INVALID_TOKEN, ErrorMessage.INVALID_TOKEN);
         }
-        if (newUserName != null)
+        if (newUserName.length() <1)
             user.setUserName(newUserName);
-        if (imgName != null)
+        if (imgName.length() <1)
             user.setUserPhoto(imgName);
         userRepository.save(user);
+    }
+
+    public Page<User> getLoginUserInformation(String sort, int pageNum, int pageSize){
+        User user = (User) identityContext.getIdentity();
+        if (user == null){
+            throw new BusinessException(INVALID_TOKEN, ErrorMessage.INVALID_TOKEN);
+        }
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(qUser.id.eq(user.getId()));
+        return userRepository.findAll(booleanBuilder, HttpResponseDataUtil.sortAndPaging(sort, pageNum, pageSize));
     }
 
 

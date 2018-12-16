@@ -28,8 +28,55 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-
+            Search();
         });
+        function GetUserInfomation() {
+            $.ajax({
+                url:"${backserver}/user/info",
+                type: "get",
+                contentType: 'application/json',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Jwt-Token","${jwtToken}");
+                },
+                success: function(data){
+                    var json = eval(data);
+                    $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
+
+                    $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    $("#usertel").text(data.content[0].userTelenumber);
+                }
+            })
+        }
+
+        function Search() {
+            $("#search").click(function(){
+                var mapurl= "http://api.map.baidu.com/geocoder/v2/?address="+$("#addr").val()+"&output=json&ak=mdOAAKh0CVM7V6buxZuOhhEPIstA4Gfp&callback=SearchCallBack";
+                $.ajax({
+                    url: mapurl,
+                    type: "get",
+                    dataType : "jsonp",
+                    jsonp: "callbackparam",
+                    jsonpCallback:"success_jsonpCallback",
+                    success: function (data) {
+                        // var json = eval(data);
+                        // var lnglat = "lng=" + json.result.location.lng + "&lat=" + json.result.location.lat;
+                        // console.log(lnglat);
+                    }
+                })
+            })
+        }
+        // function Search() {
+        //     $("#search").click(function(){
+        //         var mapurl= "http://api.map.baidu.com/geocoder/v2/?address="+$("#addr").val()+"&output=json&ak=mdOAAKh0CVM7V6buxZuOhhEPIstA4Gfp&callback=SearchCallBack";
+        //         $.get(mapurl);
+        //     })
+        // }
+        //
+        function SearchCallBack(data) {
+            var json = eval(data);
+            var lnglat = "lng=" + json.result.location.lng + "&lat=" + json.result.location.lat;
+            $(location).attr('href', "/list?"+lnglat);
+        }
     </script>
 </head>
 
@@ -48,13 +95,18 @@
                             <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                                 <ul class="navbar-nav">
                                     <#if Session.jwtToken?exists>
+                                        <script>
+                                            $(document).ready(function(){
+                                                GetUserInfomation();
+                                            });
+                                        </script>
                                         <li class="nav-item dropdown">
                                             <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                              用户名
                                              <span class="icon-arrow-down"></span>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                                <a class="dropdown-item" href="#">个人主页</a>
+                                                <a class="dropdown-item" href="/user/info">个人主页</a>
                                                 <!--<a class="dropdown-item" href="#"></a>-->
                                                 <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                             </div>
@@ -83,18 +135,18 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="slider-content_wrap">
-                                    <h1>与世界分享你所知到的美食</h1>
+                                    <h1>与世界分享你所知道的美食</h1>
                                     <h5>Let's uncover the best places to eat, drink, and shop nearest to you.</h5>
                                 </div>
                             </div>
                         </div>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-10">
-                                <form class="form-wrap mt-4" action="listing.ftl" method="#">
+                                <form class="form-wrap mt-4" action="listing.ftl" method="get" onsubmit="return false">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <input type="text" placeholder="输入想要查找的美食" class="btn-group1">
-                                        <input type="text" placeholder="成都" class="btn-group2">
-                                        <button type="submit" class="btn-form"><span class="icon-magnifier search-icon"></span>搜索<i class="pe-7s-angle-right"></i></button>
+                                        <input type="text" placeholder="成都" value="成都" id="addr" class="btn-group2">
+                                        <button type="submit" id="search" class="btn-form"><span class="icon-magnifier search-icon"></span>搜索<i class="pe-7s-angle-right"></i></button>
                                     </div>
                                 </form>
                             </div>

@@ -3,13 +3,13 @@ package team.j2e8.findcateserver.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import team.j2e8.findcateserver.infrastructure.ObjectSelector;
 import team.j2e8.findcateserver.infrastructure.usercontext.IdentityContext;
 import team.j2e8.findcateserver.models.User;
 import team.j2e8.findcateserver.services.UserService;
@@ -64,5 +64,15 @@ public class UserController {
         String imgName = jsonNode.path("img_name").textValue();
         userService.updateUserInformation(newUserName, imgName);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/info")
+    public ResponseEntity<?> getUserInformation(@RequestParam(value = "${spring.data.rest.page-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-number}") Integer pageNum,
+                                                @RequestParam(value = "${spring.data.rest.limit-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-size}") Integer pageSize,
+                                                @RequestParam(value = "${spring.data.rest.sort-param-name}", required = false, defaultValue = "id")String sort) throws Exception {
+        Page<User> user = userService.getLoginUserInformation(sort, pageNum, pageSize);
+        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(user,
+                "(id, userName, userTelenumber, userPhoto, userEmail, shops(shopId, shopName, shopTelenumber, shopAddress, shopPhoto))"));
     }
 }
