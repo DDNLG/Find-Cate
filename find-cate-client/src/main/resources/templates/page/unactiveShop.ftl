@@ -9,7 +9,7 @@
     <#assign JwtToken=Session.jwtToken>
     <script type="text/javascript">
         $(document).ready(function(){
-                $.ajax({url:"http://localhost:12344/shop/unactive",
+                $.ajax({url:"${backserver}/shop/unactive",
                     // dataType:"json",
                     type: 'get',
                     contentType: "application/x-www-form-urlencoded",
@@ -49,7 +49,7 @@
                     "id":$(e.target).attr("id")
                 };
 
-            $.ajax({url:"http://localhost:12344/shop/active",
+            $.ajax({url:"${backserver}/shop/active",
                 // dataType:"json",
                 type: 'post',
                 contentType: "application/json",

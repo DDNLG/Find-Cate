@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/12/11 23:16
  */
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "")
 public class PageController {
     @Value("${back-end.server}")
     private String backendServer;
@@ -78,7 +78,7 @@ public class PageController {
         if (request.getSession().getAttribute("jwtToken") == null){
             return new ModelAndView("redirect:/user/login");
         }else {
-            return new ModelAndView("/page/userinfo")
+            return new ModelAndView("/page/editinfo")
                     .addObject("backserver", backendServer)
                     .addObject("imgserver", imgServer);
         }
@@ -110,6 +110,14 @@ public class PageController {
     @RequestMapping(value = "/active",method = RequestMethod.GET)
     public ModelAndView unactiveShopList(){
         return new ModelAndView("/page/unactiveShop")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+
+    @RequestMapping(value = "/food",method = RequestMethod.GET)
+    public ModelAndView foodOperate(@RequestParam( defaultValue = "") Integer shopId){
+        return new ModelAndView("/page/operateFood")
+                .addObject("shopId", shopId)
                 .addObject("backserver", backendServer)
                 .addObject("imgserver", imgServer);
     }

@@ -30,8 +30,45 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            page = 0;
+            elemenum = 1;
+            last = false;
+            $("#listbottom").hide();
+            scrollBottom();
             GetShopList();
         });
+        function scrollBottom() {
+            $(window).scroll(
+
+                    function() {
+                        var scrollTop = $(this).scrollTop();
+                        var scrollHeight = $(document).height();
+                        var windowHeight = $(this).height();
+                        if (scrollTop + windowHeight == scrollHeight) {
+                            // 此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+                            getShopAjax();
+                        }
+                    });
+        }
+
+        function getShopAjax() {
+            if (!last) {
+                page = page+1;
+                $.ajax({
+                    url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat")+"&number="+page,
+                    type: 'get',
+                    contentType: 'application/json',
+                    success:function (data) {
+                        var json = eval(data);
+                        createShopElement(json);
+                    }
+                });
+            } else {
+                $("#listbottom").show();
+            }
+
+        }
+
         function GetShopList() {
             $.ajax({
                 url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat"),
@@ -39,6 +76,7 @@
                 contentType: 'application/json',
                 success:function (data) {
                     var json = eval(data);
+                    $("#resultNum").text("有"+json.totalElements+"个结果");
                     createShopElement(json);
                 }
             })
@@ -51,6 +89,7 @@
         function createShopElement(data) {
             var modelList = data.numberOfElements;
             var shops = data.content;
+            last = data.last;
             if(modelList>0){
 
                 for(var i=0; i<modelList; i++){
@@ -62,8 +101,8 @@
                     var value ="<div class=\"col-sm-6 col-lg-12 col-xl-6 featured-responsive\" >" +
                             "                       <div class=\"featured-place-wrap\">" +
                             "                                <a href=\"/shop/page?shopId="+shops[i].shopId+"\">" +
-                            "                                    <img src=\"http://vinsonws.xin:7888/65636438_p0_master1200.jpg\" class=\"img-fluid\" alt=\"#\">" +
-                            "                                    <span class=\"featured-rating-orange \">6.5</span>" +
+                            "                                    <img src=\"${imgserver}/"+ shops[i].shopPhoto +"\" class=\"img-fluid\" alt=\"#\">" +
+                            "                                    <span class=\"featured-rating-green \">"+(elemenum)+"</span>" +
                             "                                    <div class=\"featured-title-box\">" +
                             "                                        <h6>"+shops[i].shopName+"</h6>" +
                             "                                        <p>Restaurant </p> <span>• </span>" +
@@ -99,15 +138,31 @@
                         var marker = new BMap.Marker(point);
                         map.addOverlay(marker);
                         var content="商铺名称：" + shops[i].shopName +"<br>商铺地址："+shops[i].shopAddress+"<br>商铺电话："+shops[i].shopTelenumber+"";
-                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),shops[i].shopName,content);
+                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),(elemenum++),content);
                         // var label = new BMap.Label(shops[i].shopName,{offset:new BMap.Size(20,-10)});
                         // marker.setLabel(label);
                     } else {
                         var content="商铺名称：" + shops[i].shopName +"<br>商铺地址："+shops[i].shopAddress+"<br>商铺电话："+shops[i].shopTelenumber+"";
-                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),shops[i].shopName,content);
+                        addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat),(elemenum++),content);
                     }
                 }
             }
+        }
+        function GetUserInfomation(jwtToken) {
+            $.ajax({
+                url:"${backserver}/user/info",
+                type: "get",
+                contentType: 'application/json',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Jwt-Token",jwtToken);
+                },
+                success: function(data){
+                    var json = eval(data);
+                    $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
+
+                    $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                }
+            })
         }
     </script>
 </head>
@@ -127,6 +182,11 @@
                             <ul class="navbar-nav">
                                 <#if Session.jwtToken?exists>
                                     <li class="nav-item dropdown">
+                                        <script>
+                                            $(document).ready(function(){
+                                                GetUserInfomation("${jwtToken}");
+                                            });
+                                        </script>
                                         <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             用户名
                                             <span class="icon-arrow-down"></span>
@@ -158,8 +218,8 @@
                 <div class="col-md-7 responsive-wrap">
                     <div class="row detail-filter-wrap">
                         <div class="col-md-4 featured-responsive">
-                            <div class="detail-filter-text">
-                                <p>34 Results For <span>Restaurant</span></p>
+                            <div class="detail-filter-text" >
+                                <p id="resultNum">34 Results For <span>Restaurant</span></p>
                             </div>
                         </div>
                         <div class="col-md-8 featured-responsive">
@@ -240,6 +300,13 @@
                             <#--</div>-->
                         <#--</div>-->
 
+                    </div>
+                    <div class="row justify-content-center light-bg">
+                        <div class="col-md-4">
+                            <div class="featured-btn-wrap">
+                                <div  class="btn btn-danger" id="listbottom">到底了</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-5 responsive-wrap map-wrap">

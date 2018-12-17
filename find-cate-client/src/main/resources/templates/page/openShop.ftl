@@ -60,7 +60,7 @@
         }
     </script>
 </head>
-<body>
+<body background="w">
 <div class="style_changer">
     <div class="style_changer_text">Themes:</div>
     <input type="submit" value="1" onclick="setActiveStyleSheet('style1');" />

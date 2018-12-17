@@ -92,7 +92,7 @@ public class ShopController {
     public ResponseEntity<?> getShopById(@RequestParam(required = true) Double lng,
                             @RequestParam(required = true) Double lat,
                             @RequestParam(required = false) String name,
-                            @RequestParam(required = false) String type, Pageable pageable,
+                            @RequestParam(required = false) String type,
                             @RequestParam(value = "${spring.data.rest.page-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-number}") Integer pageNum,
                             @RequestParam(value = "${spring.data.rest.limit-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-size}") Integer pageSize) {
         Page<Shop> shops = shopService.getShopsByCondition(lng, lat, name, type, pageNum, pageSize);

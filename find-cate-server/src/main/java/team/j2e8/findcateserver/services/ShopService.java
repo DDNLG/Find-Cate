@@ -137,11 +137,11 @@ public class ShopService {
 
 //        return shopRepository.findAll(booleanBuilder, HttpResponseDataUtil.sortAndPagingByLatAndLng(lng, lat, pageNum, pageSize));
         List<Shop> shops =shopRepository.findByLngAndLat(lng, lat,pageNum,pageSize);
-
-        return listToPage(shops, pageNum, pageSize);
+        Integer shopsSize =shopRepository.findByLngAndLatTest(lng, lat);
+        return listToPage(shops, pageNum, pageSize,shopsSize);
     }
 
-    private Page<Shop> listToPage(List<Shop> shops, int pageNum, int pageSize){
-        return new PageImpl<Shop>(shops,PageRequest.of(pageNum, pageSize),shops.size());
+    private Page<Shop> listToPage(List<Shop> shops, int pageNum, int pageSize, int totalSize){
+        return new PageImpl<Shop>(shops,PageRequest.of(pageNum, pageSize),totalSize);
     }
 }
