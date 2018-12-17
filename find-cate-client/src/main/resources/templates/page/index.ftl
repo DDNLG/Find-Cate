@@ -30,13 +30,13 @@
         $(document).ready(function(){
             Search();
         });
-        function GetUserInfomation() {
+        function GetUserInfomation(jwtToken) {
             $.ajax({
                 url:"${backserver}/user/info",
                 type: "get",
                 contentType: 'application/json',
                 beforeSend: function(request) {
-                    request.setRequestHeader("Jwt-Token","${jwtToken}");
+                    request.setRequestHeader("Jwt-Token",jwtToken);
                 },
                 success: function(data){
                     var json = eval(data);
@@ -97,7 +97,7 @@
                                     <#if Session.jwtToken?exists>
                                         <script>
                                             $(document).ready(function(){
-                                                GetUserInfomation();
+                                                GetUserInfomation("${jwtToken}");
                                             });
                                         </script>
                                         <li class="nav-item dropdown">
@@ -206,7 +206,7 @@
                                         <img src="images/find-place3.jpg" class="img-fluid" alt="img13" />
                                         <figcaption>
                                             <h5>中餐 </h5>
-                                            <p>收藏数量100/p>
+                                            <p>收藏数量100</p>
                                         </figcaption>
                                     </figure>
                                 </div>

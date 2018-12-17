@@ -79,7 +79,8 @@ public class ShopService {
         return user.getUserPassword().equals(pass);
     }
 
-    public void registerShop(String password,String shopName,String shopAddr,String shopTelenumber,String shopPhoto) throws Exception{
+    public void registerShop(String password,String shopName,String shopAddr,String shopTelenumber,String shopPhoto,
+                             Double shopLng,Double shopLat) throws Exception{
         EnsureDataUtil.ensureNotEmptyData(password, ErrorMessage.EMPTY_PASSWORD.getMessage());
         if(!judgePassword(password)){
             throw new ResourceNotFoundException(ErrorMessage.ERROR_LOGIN__NAME_OR_PASSWORD);
@@ -92,6 +93,8 @@ public class ShopService {
         shop.setShopPhoto(shopPhoto);
         shop.setUser(TokenToUser());
         shop.setShopActive(0);
+        shop.setShopLng(shopLng);
+        shop.setShopLat(shopLat);
         shopRepository.save(shop);
     }
 

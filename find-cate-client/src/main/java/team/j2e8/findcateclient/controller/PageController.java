@@ -3,6 +3,7 @@ package team.j2e8.findcateclient.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -58,38 +59,57 @@ public class PageController {
                 .addObject("backserver", backendServer)
                 .addObject("imgserver", imgServer);
     }
-
     @RequestMapping(value = "/user/info")
     public ModelAndView userInfortaion(HttpServletRequest request){
-//        if (request.getSession().getAttribute("jwtToken") == null){
-//            return new ModelAndView("redirect:/user/login");
-//        }else {
-//            return new ModelAndView("/page/userinfo")
-//                    .addObject("backserver", backendServer)
-//                    .addObject("imgserver", imgServer);
-//        }
-        return new ModelAndView("/page/userinfo")
+        if (request.getSession().getAttribute("jwtToken") == null){
+            return new ModelAndView("redirect:/user/login");
+        }else {
+            return new ModelAndView("/page/userinfo")
                     .addObject("backserver", backendServer)
                     .addObject("imgserver", imgServer);
+        }
+//        return new ModelAndView("/page/userinfo")
+//                .addObject("backserver", backendServer)
+//                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/user/edit")
     public ModelAndView editUserInfortaion(HttpServletRequest request){
-//        if (request.getSession().getAttribute("jwtToken") == null){
-//            return new ModelAndView("redirect:/user/login");
-//        }else {
-//            return new ModelAndView("/page/userinfo")
-//                    .addObject("backserver", backendServer)
-//                    .addObject("imgserver", imgServer);
-//        }
-        return new ModelAndView("/page/editinfo")
-                .addObject("backserver", backendServer)
-                .addObject("imgserver", imgServer);
+        if (request.getSession().getAttribute("jwtToken") == null){
+            return new ModelAndView("redirect:/user/login");
+        }else {
+            return new ModelAndView("/page/userinfo")
+                    .addObject("backserver", backendServer)
+                    .addObject("imgserver", imgServer);
+        }
+//        return new ModelAndView("/page/editinfo")
+//                .addObject("backserver", backendServer)
+//                .addObject("imgserver", imgServer);
     }
 
     @RequestMapping(value = "/list")
     public ModelAndView list(){
         return new ModelAndView("/page/listing")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+
+    @RequestMapping(value = "/open",method = RequestMethod.GET)
+    public ModelAndView open(){
+        return new ModelAndView("/page/openShop")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+
+    @RequestMapping(value = "/open",method = RequestMethod.POST)
+    public ModelAndView openCommit(){
+        return new ModelAndView("/page/openShop")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+    @RequestMapping(value = "/active",method = RequestMethod.GET)
+    public ModelAndView unactiveShopList(){
+        return new ModelAndView("/page/unactiveShop")
                 .addObject("backserver", backendServer)
                 .addObject("imgserver", imgServer);
     }
