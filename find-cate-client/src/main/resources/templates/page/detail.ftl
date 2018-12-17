@@ -36,6 +36,11 @@
         $(document).ready(function(){
             GetTheShopInformation();
         });
+
+        $(document).ready(function () {
+            GetCommityList();
+        })
+
         function GetTheShopInformation() {
             $.ajax({
                 url:"${backserver}/shop/getone?shopId=${shopId}",
@@ -51,7 +56,13 @@
         }
         function GetCommityList() {
             $.ajax({
-                url:"${backserver}/shop/getone?shopId=${shopId}",
+                url:"${backserver}/commity/gets?shopId=${shopId}",
+                type:'get',
+                contentType:'application/json',
+                success:function (data) {
+                    var json = eval(data);
+                    createShopElement(json)
+                }
             })
         }
         function GetUserInfomation() {
@@ -68,6 +79,50 @@
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
                 }
             })
+        }
+
+        function createShopElement(data) {
+            var modelList = data.numberOfElements;
+            var commity = data.content;
+            if(modelList>0){
+
+                for(var i=0; i<modelList; i++){
+                    // var option="<option value=\""+modelList[i].modelId+"\"";
+                    // if(_LastModelId && _LastModelId==modelList[i].modelId){
+                    //     option += " selected=\"selected\" "; //默认选中
+                    //     _LastModelId=null;
+                    // }
+                    var value ="<div class=\"customer-review_wrap\">" +
+                            "                       <div class=\"customer-img\">" +
+                            "                                    <img src=\"/images/customer-img1.jpg\" class=\"img-fluid\" alt=\"#\">" +
+                            "                                    <p>"+ commity[i].user.userName +"</p>" +
+                            "                                    </div>" +
+                            "                                    <div class=\"customer-content-wrap\">" +
+                            "                                        <div class=\"customer-content\">" +
+                            "                                        <div class=\"customer-review\">" +
+                            "                                        <h6>标题</h6>" +
+                            "                                        <span></span>" +
+                            "                                        <span></span>" +
+                            "                                        <span></span>" +
+                            "                                        <span></span>" +
+                            "                                            <span class=\"round-icon-blank\"></span>" +
+                            "                                            <p>"+ commity[i].commityTime + "</p>" +
+                            "                                                </div>" +
+                            "                                            <div class=\"customer-rating\">8.0</div>" +
+                            "                                            </div>" +
+                            "                                                <p id=\"commity_content\" class=\"customer-text\">" + commity[i].commityContent +"</p>" +
+                            "                                            <ul>" +
+                            "                                        </ul>" +
+                            "                                        <span>28 people marked this review as helpful</span>" +
+                            "                                            <a href=\"#\"><span class=\"icon-like\"></span>Helpful</a>" +
+                            "                                            </div>" +
+                            "                                            </div>" ;
+                    $("#commitylist").append(value);
+
+                    //addMarker(new BMap.Point(shops[i].shopLng, shops[i].shopLat));
+                    // addMarker(new BMap.Point(0, 0));
+                }
+            }
         }
     </script>
 </head>
@@ -240,43 +295,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="booking-checkbox_wrap mt-4">
-                        <h5 id="commity_total">34 Reviews</h5>
+                    <div class="booking-checkbox_wrap mt-4" id="commitylist">
+                        <h5 >34 Reviews</h5>
                         <hr>
-                        <div class="customer-review_wrap">
-                            <div class="customer-img">
-                                <img src="/images/customer-img1.jpg" class="img-fluid" alt="#">
-                                <p>Amanda G</p>
-                            </div>
-                            <div class="customer-content-wrap">
-                                <div class="customer-content">
-                                    <div class="customer-review">
-                                        <h6>Best noodles in the Newyork city</h6>
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <span class="round-icon-blank"></span>
-                                        <p>Reviewed 2 days ago</p>
-                                    </div>
-                                    <div class="customer-rating">8.0</div>
-                                </div>
-                                <p class="customer-text">I love the noodles here but it is so rare that I get to come here. Tasty Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice, and you should be seated quickly. I usually get the
-                                    hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great. If you want your noodles a little chewier, get the knife cut noodles, which are also amazing. Their dumplings are great
-                                    dipped in their chili sauce.
-                                </p>
-                                <p class="customer-text">I love how you can see into the kitchen and watch them make the noodles and you can definitely tell that this is a family run establishment. The prices are are great with one dish maybe being $9. You just have to remember
-                                    to bring cash.
-                                </p>
-                                <ul>
-                                    <li><img src="/images/review-img1.jpg" class="img-fluid" alt="#"></li>
-                                    <li><img src="/images/review-img2.jpg" class="img-fluid" alt="#"></li>
-                                    <li><img src="/images/review-img3.jpg" class="img-fluid" alt="#"></li>
-                                </ul>
-                                <span>28 people marked this review as helpful</span>
-                                <a href="#"><span class="icon-like"></span>Helpful</a>
-                            </div>
-                        </div>
+                        <#--<div class="customer-review_wrap">-->
+                            <#--<div class="customer-img">-->
+                                <#--<img src="/images/customer-img1.jpg" class="img-fluid" alt="#">-->
+                                <#--<p>Amanda G</p>-->
+                            <#--</div>-->
+                            <#--<div class="customer-content-wrap">-->
+                                <#--<div class="customer-content">-->
+                                    <#--<div class="customer-review">-->
+                                        <#--<h6>Best noodles in the Newyork city</h6>-->
+                                        <#--<span></span>-->
+                                        <#--<span></span>-->
+                                        <#--<span></span>-->
+                                        <#--<span></span>-->
+                                        <#--<span class="round-icon-blank"></span>-->
+                                        <#--<p id="commity_time"></p>-->
+                                    <#--</div>-->
+                                    <#--<div class="customer-rating">8.0</div>-->
+                                <#--</div>-->
+
+                                    <#--<p id="commity_content" class="customer-text">xxxxxxx-->
+                                    <#--</p>-->
+                                <#--<ul>-->
+                                    <#--<li><img src="/images/review-img1.jpg" class="img-fluid" alt="#"></li>-->
+                                    <#--<li><img src="/images/review-img2.jpg" class="img-fluid" alt="#"></li>-->
+                                    <#--<li><img src="/images/review-img3.jpg" class="img-fluid" alt="#"></li>-->
+                                <#--</ul>-->
+                                <#--<span>28 people marked this review as helpful</span>-->
+                                <#--<a href="#"><span class="icon-like"></span>Helpful</a>-->
+                            <#--</div>-->
+                        <#--</div>-->
                         <hr>
                     </div>
                 </div>
