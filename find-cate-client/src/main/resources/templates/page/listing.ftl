@@ -12,7 +12,7 @@
     <!-- Favicons -->
     <link rel="shortcut icon" href="#">
     <!-- Page Title -->
-    <title>Listing &amp; Directory Website Template</title>
+    <title>Find Cate</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Google Fonts -->
@@ -32,6 +32,24 @@
         $(document).ready(function(){
             GetShopList();
         });
+        function GetUserInfomation(jwtToken) {
+            $.ajax({
+                url:"${backserver}/user/info",
+                type: "get",
+                contentType: 'application/json',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Jwt-Token",jwtToken);
+                },
+                success: function(data){
+                    var json = eval(data);
+                    $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    $("#usertel").text(data.content[0].userTelenumber);
+                    $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
+                    if(data.content[0].userEmail=="484499@qq.com")
+                        $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
+                }
+            })
+        }
         function GetShopList() {
             $.ajax({
                 url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat"),
@@ -126,13 +144,19 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
                                 <#if Session.jwtToken?exists>
+                                <script>
+                                    $(document).ready(function(){
+                                        GetUserInfomation("${jwtToken}");
+                                    });
+                                </script>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" href="/user/info">个人主页</a>
+                                            <a class="dropdown-item" href="/index">返回</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>

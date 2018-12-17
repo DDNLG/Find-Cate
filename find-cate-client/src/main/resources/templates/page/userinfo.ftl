@@ -12,7 +12,7 @@
     <!-- Favicons -->
     <link rel="shortcut icon" href="#">
     <!-- Page Title -->
-    <title>Listing &amp; Directory Website Template</title>
+    <title>Find Cate</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Google Fonts -->
@@ -169,6 +169,7 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" href="/user/info">个人主页</a>
+                                            <a class="dropdown-item" href="/index">返回</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>
@@ -223,29 +224,6 @@
 <!--============================= BOOKING DETAILS =============================-->
 
 <!--//END BOOKING DETAILS -->
-<!--============================= FOOTER =============================-->
-<footer class="main-block dark-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="copyright">
-
-                    <p>Copyright &copy; 2018 Listing. All rights reserved | made with Colorlib -  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
-
-                    <ul>
-                        <li><a href="#"><span class="ti-facebook"></span></a></li>
-                        <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
-                        <li><a href="#"><span class="ti-instagram"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!--//END FOOTER -->
-
-
-
 
 <!-- jQuery, Bootstrap JS. -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -291,5 +269,22 @@
     }
 </script>
 </body>
+<footer class="main-block dark-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
 
+                    <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们
+
+                            <ul>
+                                <li><a href="#"><span class="ti-facebook"></span></a></li>
+                                <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
+                                <li><a href="#"><span class="ti-instagram"></span></a></li>
+                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 </html>

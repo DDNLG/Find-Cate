@@ -36,6 +36,14 @@ public class PageController {
                 .addObject("imgserver", imgServer);
     }
 
+    @RequestMapping(value = "/user/quit")
+    public ModelAndView quit(HttpServletRequest request){
+        request.getSession().setAttribute("jwtToken", null);
+        return new ModelAndView("redirect:/index")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
+
     @RequestMapping(value = "/user/afterlogin")
     public ModelAndView login(@RequestParam(required = false) String jwtToken,HttpServletRequest request){
         if (jwtToken != null)
@@ -78,7 +86,7 @@ public class PageController {
         if (request.getSession().getAttribute("jwtToken") == null){
             return new ModelAndView("redirect:/user/login");
         }else {
-            return new ModelAndView("/page/userinfo")
+            return new ModelAndView("/page/editinfo")
                     .addObject("backserver", backendServer)
                     .addObject("imgserver", imgServer);
         }
@@ -95,10 +103,14 @@ public class PageController {
     }
 
     @RequestMapping(value = "/open",method = RequestMethod.GET)
-    public ModelAndView open(){
-        return new ModelAndView("/page/openShop")
-                .addObject("backserver", backendServer)
-                .addObject("imgserver", imgServer);
+    public ModelAndView open(HttpServletRequest request){
+        if (request.getSession().getAttribute("jwtToken") == null){
+            return new ModelAndView("redirect:/user/login");
+        }else {
+            return new ModelAndView("/page/openShop")
+                    .addObject("backserver", backendServer)
+                    .addObject("imgserver", imgServer);
+        }
     }
 
     @RequestMapping(value = "/open",method = RequestMethod.POST)

@@ -66,6 +66,9 @@
                     var json = eval(data);
                     $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
+                    if(data.content[0].userEmail=="484499@qq.com")
+                        $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
                 }
             })
         }
@@ -96,8 +99,9 @@
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" id="userpage" href="/user/info">个人主页</a>
+                                            <a class="dropdown-item" href="/index">返回</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>
@@ -328,33 +332,8 @@
             </div>
         </div>
     </section>
-    <!--//END BOOKING DETAILS -->
-    <!--============================= FOOTER =============================-->
-    <footer class="main-block dark-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright">
-                        
-                        <p>Copyright &copy; 2018 Listing. All rights reserved | made with Colorlib -  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
-                        
-                        <ul>
-                            <li><a href="#"><span class="ti-facebook"></span></a></li>
-                            <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
-                            <li><a href="#"><span class="ti-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--//END FOOTER -->
 
 
-
-
-    <!-- jQuery, Bootstrap JS. -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -397,5 +376,22 @@
         }
     </script>
 </body>
+<footer class="main-block dark-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
 
+                    <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们
+
+                            <ul>
+                                <li><a href="#"><span class="ti-facebook"></span></a></li>
+                                <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
+                                <li><a href="#"><span class="ti-instagram"></span></a></li>
+                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 </html>
