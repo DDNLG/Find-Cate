@@ -3,6 +3,7 @@ package team.j2e8.findcateclient.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -56,6 +57,23 @@ public class PageController {
     @RequestMapping(value = "/list")
     public ModelAndView list(){
         return new ModelAndView("/page/listing")
+                .addObject("backserver", backendServer);
+    }
+
+    @RequestMapping(value = "/open",method = RequestMethod.GET)
+    public ModelAndView open(){
+        return new ModelAndView("/page/openShop")
+                .addObject("backserver", backendServer);
+    }
+
+    @RequestMapping(value = "/open",method = RequestMethod.POST)
+    public ModelAndView openCommit(){
+        return new ModelAndView("/page/openShop")
+                .addObject("backserver", backendServer);
+    }
+    @RequestMapping(value = "/active",method = RequestMethod.GET)
+    public ModelAndView unactiveShopList(){
+        return new ModelAndView("/page/unactiveShop")
                 .addObject("backserver", backendServer);
     }
 }

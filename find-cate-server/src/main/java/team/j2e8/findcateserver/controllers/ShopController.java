@@ -63,9 +63,9 @@ public class ShopController {
         String shopAddr = jsonNode.path("shop_addr").textValue();
         String shopTelenumber = jsonNode.path("shop_telenumber").textValue();
         String shopPhoto = jsonNode.path("shop_photo").textValue();
-//        String shopLng = jsonNode.path("shop_lng").textValue();
-//        String shopLat = jsonNode.path("shop_lat").textValue();
-        shopService.registerShop(password, shopName, shopAddr, shopTelenumber, shopPhoto);
+        Double shopLng = jsonNode.path("shop_lng").asDouble();
+        Double shopLat = jsonNode.path("shop_lat").asDouble();
+        shopService.registerShop(password, shopName, shopAddr, shopTelenumber, shopPhoto,shopLng,shopLat);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
@@ -80,7 +80,7 @@ public class ShopController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/active")
+    @RequestMapping(method = RequestMethod.POST, value = "/active")
     public ResponseEntity<?> activeShop(@RequestBody JsonNode jsonNode) throws Exception {
         int id = jsonNode.path("id").asInt();
         shopService.activeShop(id);
