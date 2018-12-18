@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
-    <title>userList</title>
+    <title>Find Cate</title>
     <link rel="stylesheet" href="/scss/bootstrap.css"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -170,6 +170,9 @@
                     var json = eval(data);
 
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    $("#usertel").text(data.content[0].userTelenumber);if(data.content[0].admin.adminId==data.content[0].id)
+                        $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
+                    $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
                 }
             })
         }

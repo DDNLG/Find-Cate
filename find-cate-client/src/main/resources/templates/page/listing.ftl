@@ -12,7 +12,7 @@
     <!-- Favicons -->
     <link rel="shortcut icon" href="#">
     <!-- Page Title -->
-    <title>Listing &amp; Directory Website Template</title>
+    <title>Find Cate</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Google Fonts -->
@@ -161,6 +161,10 @@
                     $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
 
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    if(data.content[0].admin.adminId==data.content[0].id)
+                        $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
+                    $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
+
                 }
             })
         }
@@ -191,8 +195,9 @@
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" href="/user/info">个人主页</a>
+                                            <a class="dropdown-item" href="/open">开店</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>

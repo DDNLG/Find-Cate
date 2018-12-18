@@ -12,7 +12,7 @@
     <!-- Favicons -->
     <link rel="shortcut icon" href="#">
     <!-- Page Title -->
-    <title>Listing &amp; Directory Website Template</title>
+    <title>Find Cate</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Google Fonts -->
@@ -66,6 +66,9 @@
                     var json = eval(data);
                     $("#userimg").append("<img class=\"img-fluid\" src=\"${imgserver}/"+data.content[0].userPhoto +"\"  width=\"130\" height=\"130\" >");
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
+                    if(data.content[0].admin.adminId==data.content[0].id)
+                        $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
+                    $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
                 }
             })
         }
@@ -96,8 +99,9 @@
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" id="userpage" href="/user/info">个人主页</a>
+                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item" href="/user/info">个人主页</a>
+                                            <a class="dropdown-item" href="/open">开店</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
                                         </div>
@@ -335,9 +339,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="copyright">
-                        
-                        <p>Copyright &copy; 2018 Listing. All rights reserved | made with Colorlib -  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
-                        
+
+                        <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们
                         <ul>
                             <li><a href="#"><span class="ti-facebook"></span></a></li>
                             <li><a href="#"><span class="ti-twitter-alt"></span></a></li>

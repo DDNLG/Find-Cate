@@ -35,6 +35,13 @@ public class PageController {
                 .addObject("backserver", backendServer)
                 .addObject("imgserver", imgServer);
     }
+    @RequestMapping(value = "/user/quit")
+    public ModelAndView quit(HttpServletRequest request) {
+        request.getSession().setAttribute("jwtToken", null);
+        return new ModelAndView("redirect:/index")
+                .addObject("backserver", backendServer)
+                .addObject("imgserver", imgServer);
+    }
 
     @RequestMapping(value = "/user/afterlogin")
     public ModelAndView login(@RequestParam(required = false) String jwtToken,HttpServletRequest request){

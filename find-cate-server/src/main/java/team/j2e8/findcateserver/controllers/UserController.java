@@ -73,6 +73,6 @@ public class UserController {
                                                 @RequestParam(value = "${spring.data.rest.sort-param-name}", required = false, defaultValue = "id")String sort) throws Exception {
         Page<User> user = userService.getLoginUserInformation(sort, pageNum, pageSize);
         return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(user,
-                "(id, userName, userTelenumber, userPhoto, userEmail, shops(shopId, shopName, shopTelenumber, shopAddress, shopPhoto))"));
+                "(id, userName, userTelenumber, userPhoto, userEmail, shops(shopId, shopName, shopTelenumber, shopAddress, shopPhoto),admin(adminId))"));
     }
 }
