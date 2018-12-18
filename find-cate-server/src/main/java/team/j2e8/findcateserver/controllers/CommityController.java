@@ -35,9 +35,9 @@ public class CommityController {
                                                 @RequestParam(value = "${spring.data.rest.page-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-number}") Integer pageNum,
                                                 @RequestParam(value = "${spring.data.rest.limit-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-size}") Integer pageSize,
                                                 @RequestParam(value = "${spring.data.rest.sort-param-name}", required = false, defaultValue = "commityId") String sort
-                                                ) throws Exception {
+    ) throws Exception {
 
         Page<Commity> commityPage = commityService.getCommentsByShopId(shopId, sort, pageNum, pageSize);
-        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(commityPage, "(foodId, foodName, foodPrice, foodPhoto, type(typeId, typeName))"));
+        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(commityPage, "(commityId, commityContent, commityTime,user(id,userName),replyList(replyId, replyContent, replyTime,user(id,userName)))"));
     }
 }
