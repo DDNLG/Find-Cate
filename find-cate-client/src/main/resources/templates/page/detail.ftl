@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="#">
     <!-- Page Title -->
     <title>Find Cate</title>
+    <link rel="stylesheet" href="/scss/bootstrap.css"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- Google Fonts -->
@@ -31,8 +32,38 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
     </script>
-
     <script type="text/javascript">
+        $(document).ready(function(){
+            $.ajax({url:"${backserver}/food/gets?shopId=${shopId}",
+                // dataType:"json",
+                type: 'get',
+                contentType: "application/x-www-form-urlencoded",
+                beforeSend:function(request){
+                    request.setRequestHeader("Jwt-Token","${Session.jwtToken}");
+                },
+                success:function(data){
+                    var json = eval(data);
+                    $.each(json.content,function (key,food) {
+                        var foodId=food.foodId;
+                        var foodPhoto=food.foodPhoto;
+                        var foodName=food.foodName;
+                        var foodPrice=food.foodPrice;
+                        var typeName=food.type.typeName;
+                        var value = "<tr><td> <img src=\"${imgserver}/"+foodPhoto+"\" width=\"150\" height=\"150\" class=\"img-fluid\" alt=\"#\"></td>"
+                            +"<td>"+foodName+"</td>"+
+                            "<td>"+typeName+"</td>" +
+                            "<td>"+foodPrice+"</td>"+
+                            "</tr>"
+                        ;
+                        $("#tb").append(value);
+                    })
+                },
+                error:function () {
+
+                }
+
+            });
+        });
         $(document).ready(function(){
             GetTheShopInformation();
         });
@@ -194,18 +225,32 @@
         </div>
     </section>
     <!--//END RESERVE A SEAT -->
-    <!--============================= BOOKING DETAILS =============================-->
+    <!--============================= 菜单区 =============================-->
     <section class="light-bg booking-details_wrap">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 responsive-wrap">
                     <div class="booking-checkbox_wrap">
                         <div class="booking-checkbox">
-                            <p>Tasty Hand-Pulled Noodles is a 1950s style diner located in Madison, Wisconsin. Opened in 1946 by Mickey Weidman, and located just across the street from Camp Randall Stadium, it has become a popular game day tradition amongst
-                                many Badger fans. The diner is well known for its breakfast selections, especially the Scrambler, which is a large mound of potatoes, eggs, cheese, gravy, and a patrons’ choice of other toppings.</p>
-                            <p>Mickies has also been featured on “Todd’s Taste of the Town” during one of ESPN’s college football broadcasts. We are one of the best Chinese restaurants in the New York, New York area. We have been recognized for our outstanding
-                                Chinese & Asian cuisine, excellent Chinese menu, and great restaurant specials. We are one of the best Chinese restaurants in the New York, New York area. We have been recognized for our outstanding Chinese & Asian cuisine,
-                                excellent Chinese menu, and great restaurant specials.</p>
+                            <h2>菜谱</h2>
+                            <br/><br/>
+                            <div class="with:80%">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>菜图</th>
+                                        <th>菜名</th>
+                                        <th>类型</th>
+                                        <th>价格</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tb">
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
                             <hr>
                         </div>
                         <div class="row">
@@ -244,6 +289,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--============================= 评论区 =============================-->
                     <div class="booking-checkbox_wrap mt-4">
                         <h5 id="commity_total">34 Reviews</h5>
                         <hr>

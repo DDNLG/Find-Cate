@@ -72,7 +72,7 @@
                     var json = eval(data);
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
                     $("#usertel").text(data.content[0].userTelenumber);
-                    if(data.content[0].userEmail=="484499@qq.com")
+                    $("#usertel").text(data.content[0].userTelenumber);if(data.content[0].admin.adminId==data.content[0].id)
                         $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
                     $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
                 }
@@ -256,6 +256,7 @@
     function formCallback(result, form) {
         window.status = "valiation callback for form '" + form.id + "': result = " + result;
     }
+
 
     var valid = new Validation('test', {immediate : true, onFormValidate : formCallback});
     Validation.addAllThese([

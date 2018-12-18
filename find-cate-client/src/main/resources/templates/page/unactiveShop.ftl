@@ -92,10 +92,11 @@
                     request.setRequestHeader("Jwt-Token","${JwtToken}");
                 },
                 success:function(){
+                    alert("激活成功！");
                     $(location).attr('href', 'active');
                 },
                 error:function () {
-
+                    alert("激活失败！");
                 }
 
             });

@@ -37,6 +37,15 @@
             GetUserInfomation();
            GetShopListByUser();
         });
+        $(document).ready(function(){
+            toServeFood();
+        });
+        function toServeFood() {
+            $(".open-now").click(function (e) {
+                var id = e.target.id;
+                $(location).attr('href', '/food?shopId='+id);
+            })
+        }
         function GetUserInfomation() {
             $.ajax({
                 url:"${backserver}/user/info",
@@ -87,12 +96,11 @@
                     var value = "<div class=\"col-md-4 featured-responsive\" >" +
                             "                       <div class=\"featured-place-wrap\">" +
                             "                                <a href=\"/shop/page?shopId=" + shops[i].shopId + "\">" +
-                            "                                    <img src=\"http://vinsonws.xin:7888/65636438_p0_master1200.jpg\" class=\"img-fluid\" alt=\"#\">" +
+                            "                                    <img src=\"${imgserver}/"+shops[i].shopPhoto+"\" class=\"img-fluid\" alt=\"#\">" +
                             "                                    <span class=\"featured-rating-orange \">6.5</span>" +
                             "                                    <div class=\"featured-title-box\">" +
                             "                                        <h6>" + shops[i].shopName + "</h6>" +
                             "                                        <p>Restaurant </p> <span>• </span>" +
-                            "                                        <p>3 Reviews</p> <span> • </span>" +
                             "                                        <p><span>$$$</span>$$</p>" +
                             "                                        <ul>" +
                             "                                            <li><span class=\"icon-location-pin\"></span>" +
@@ -105,13 +113,14 @@
                             "                                                <p>https://burgerandlobster.com</p>" +
                             "                                            </li>" +
                             "                                        </ul>" +
+                        "                                </a>" +
                             "                                        <div class=\"bottom-icons\">\n" +
-                            "                                            <div class=\"open-now\">OPEN NOW</div>\n" +
+                            "                                            <a href=\"/food?shopId="+shops[i].shopId+"\"><div class=\"open-now\">上菜</div></a>\n" +
                             "                                            <span class=\"ti-heart\"></span>\n" +
                             "                                            <span class=\"ti-bookmark\"></span>\n" +
                             "                                        </div>" +
                             "                                    </div>" +
-                            "                                </a>" +
+
                             "                            </div></div>";
                     $("#shoplist").append(value);
                 }

@@ -51,7 +51,7 @@
                                 +"<td>"+foodName+"</td>"+
                                 "<td>"+typeName+"</td>" +
                                 "<td>"+foodPrice+"</td>"+
-                                '<td><a id="'+foodId+'" class="deletefood" href="">删除</a></td>' +
+                                '<td><a id="'+foodId+'" class="deletefood"  href="" onclick="return false;">删除</a></td>' +
                                 "</tr>"
                         ;
                         $("#tb").append(value);
@@ -201,7 +201,7 @@
                                             用户名
                                             <span class="icon-arrow-down"></span>
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" href="/user/info">个人主页</a>
                                             <!--<a class="dropdown-item" href="#"></a>-->
                                             <!--<a class="dropdown-item" href="#">Something else here</a>-->
