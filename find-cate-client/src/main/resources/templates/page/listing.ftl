@@ -30,7 +30,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            page = 0;
+            page = 1;
             elemenum = 1;
             last = false;
             $("#listbottom").hide();
@@ -53,9 +53,16 @@
 
         function getShopAjax() {
             if (!last) {
+                var ajaxurl;
+                if (getUrlParam("name")==null){
+                    ajaxurl = "${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat")+"&number="+page;
+                }
+                else{
+                    ajaxurl = "${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat")+"&number="+page + "&name=" +getUrlParam("name");
+                }
                 page = page+1;
                 $.ajax({
-                    url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat")+"&number="+page,
+                    url:ajaxurl,
                     type: 'get',
                     contentType: 'application/json',
                     success:function (data) {
@@ -70,8 +77,15 @@
         }
 
         function GetShopList() {
+            var url;
+            if (getUrlParam("name")==null){
+                url = "${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat");
+            }
+            else{
+                url = "${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat") + "&name=" +getUrlParam("name");
+            }
             $.ajax({
-                url:"${backserver}/shop/search?lng=" + getUrlParam("lng") + "&lat=" + getUrlParam("lat"),
+                url:url,
                 type: 'get',
                 contentType: 'application/json',
                 success:function (data) {
@@ -84,7 +98,7 @@
         function getUrlParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
             var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-            if (r != null) return unescape(r[2]); return null; //返回参数值
+            if (r != null) return decodeURI(r[2]); return null; //返回参数值
         }
         function createShopElement(data) {
             var modelList = data.numberOfElements;

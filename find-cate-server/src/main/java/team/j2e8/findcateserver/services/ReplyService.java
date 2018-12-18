@@ -2,13 +2,17 @@ package team.j2e8.findcateserver.services;
 
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import team.j2e8.findcateserver.exceptions.BusinessException;
 import team.j2e8.findcateserver.infrastructure.usercontext.IdentityContext;
 import team.j2e8.findcateserver.models.*;
 import team.j2e8.findcateserver.repositories.CommityRepository;
 import team.j2e8.findcateserver.repositories.ReplyRepository;
 import team.j2e8.findcateserver.repositories.UserRepository;
 import team.j2e8.findcateserver.utils.EnsureDataUtil;
+import team.j2e8.findcateserver.utils.HttpResponseDataUtil;
+import team.j2e8.findcateserver.valueObjects.ErrorCode;
 import team.j2e8.findcateserver.valueObjects.ErrorMessage;
 
 import javax.annotation.Resource;
@@ -45,6 +49,16 @@ public class ReplyService {
         reply.setCommity(optionalCommity.get());
         reply.setReplyContent(replyContent);
         replyRepository.save(reply);
+    }
+
+    //通过评估id获取回复
+    public Page<Reply> getReplyByCommityId(Integer commityId, String sort, int pageNum, int pageSize){
+        if (commityId == null) throw new NullPointerException("需要commityId");
+        Optional<Commity> optionalShop = commityRepository.findOne(qCommity.commityId.eq(commityId));
+        if (!optionalShop.isPresent()) throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, ErrorMessage.NOT_FOUND);
+        BooleanBuilder booleanBuilder = new BooleanBuilder().and(qCommity.commityId.eq(commityId));
+
+        return replyRepository.findAll(booleanBuilder, HttpResponseDataUtil.sortAndPaging(sort, pageNum, pageSize));
     }
 
 }

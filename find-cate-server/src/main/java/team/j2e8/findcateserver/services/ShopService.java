@@ -1,5 +1,6 @@
 package team.j2e8.findcateserver.services;
 
+import com.google.common.collect.Iterables;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,7 @@ import team.j2e8.findcateserver.utils.EnsureDataUtil;
 import team.j2e8.findcateserver.valueObjects.ErrorMessage;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import javax.annotation.Resource;
 
 /**
@@ -126,19 +125,58 @@ public class ShopService {
         if (lng == null || lat == null) throw  new NullPointerException("经纬度不为空");
         pageNum = pageNum * pageSize;
 //        JPAQueryFactory queryFactory = new JPAQueryFactory();
-        BooleanBuilder booleanBuilder = new BooleanBuilder()
-                .and(qShop.shopActive.eq(1))
-                .and(qShop.shopLng.between(lng, lng+1))
-                .and(qShop.shopLng.between(lng-1, lng))
-                .and(qShop.shopLat.between(lat, lat+1))
-                .and(qShop.shopLat.between(lat-1, lat));
-        if (name != null) booleanBuilder.and(qShop.shopName.like("%"+name+"%"));
+//        BooleanBuilder booleanBuilder = new BooleanBuilder()
+//                .and(qShop.shopActive.eq(1))
+//                .and(qShop.shopLng.between(lng, lng+1))
+//                .and(qShop.shopLng.between(lng-1, lng))
+//                .and(qShop.shopLat.between(lat, lat+1))
+//                .and(qShop.shopLat.between(lat-1, lat));
+//        if (name != null) booleanBuilder.and(qShop.shopName.like("%"+name+"%"));
 //        if (type != null) booleanBuilder.and(qSho)  //类型
 
 //        return shopRepository.findAll(booleanBuilder, HttpResponseDataUtil.sortAndPagingByLatAndLng(lng, lat, pageNum, pageSize));
-        List<Shop> shops =shopRepository.findByLngAndLat(lng, lat,pageNum,pageSize);
-        Integer shopsSize =shopRepository.findByLngAndLatTest(lng, lat);
+        List<Shop> shops;
+        Integer shopsSize;
+        if (name == null){
+            shops=shopRepository.findByLngAndLat(lng, lat,pageNum,pageSize);
+            shopsSize=shopRepository.findByLngAndLatTest(lng, lat);
+        }
+        else {
+            shops=shopRepository.findByLngAndLatAndShopName(lng, lat,pageNum,pageSize, name);
+            shopsSize=shopRepository.findByLngAndLatAndShopNameTest(lng, lat, name);
+        }
         return listToPage(shops, pageNum, pageSize,shopsSize);
+    }
+
+    public Iterable<Shop> getShopByRandom(Integer number){
+        Iterable<Shop> shops = shopRepository.findAll(new BooleanBuilder().and(qShop.shopActive.eq(1)));
+        if (Iterables.size(shops)<number){
+            return null;
+        }
+        List<Shop> shopList = new ArrayList<>();
+        Random random =new Random(new Date().getTime());
+        Set<Integer> randoms = new HashSet<>();
+        while (randoms.size()<number){
+            randoms.add(random.nextInt(Iterables.size(shops)));
+        }
+
+
+        for (Integer n:randoms){
+            Iterator<Shop> it = shops.iterator();
+            int j = 0;
+            while (it.hasNext()) {
+                if (j==n){
+                    shopList.add(it.next());
+                    break;
+                } else {
+                    it.next();
+                }
+
+                j++;
+            }
+        }
+
+        return shopList;
     }
 
     private Page<Shop> listToPage(List<Shop> shops, int pageNum, int pageSize, int totalSize){

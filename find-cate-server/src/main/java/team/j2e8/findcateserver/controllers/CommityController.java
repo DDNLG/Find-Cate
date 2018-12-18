@@ -38,6 +38,6 @@ public class CommityController {
                                                 ) throws Exception {
 
         Page<Commity> commityPage = commityService.getCommentsByShopId(shopId, sort, pageNum, pageSize);
-        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(commityPage, "(commityId, commityContent, user(id, userName))"));
+        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(commityPage, "(commityId, commityContent, commityTime,user(id,userName, userPhoto),replyList(replyId, replyContent, replyTime,user(id,userName)))"));
     }
 }

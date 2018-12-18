@@ -51,7 +51,7 @@
                                 +"<td>"+foodName+"</td>"+
                                 "<td>"+typeName+"</td>" +
                                 "<td>"+foodPrice+"</td>"+
-                                '<td><a id="'+foodId+'" class="deletefood" href="">删除</a></td>' +
+                                '<td><a id="'+foodId+'" class="deletefood"  href="" onclick="return false;">删除</a></td>' +
                                 "</tr>"
                         ;
                         $("#tb").append(value);
@@ -178,7 +178,7 @@
         }
     </script>
 </head>
-<body class="">
+<body style="font-size: 1.4rem;">
 <div class="dark-bg sticky-top">
     <div class="container-fluid">
         <div class="row">
@@ -221,7 +221,7 @@
 <div class="container">
 <div class="form_content">
 
-    <form id="test" onsubmit="return false">
+    <form onsubmit="return false">
 
         <fieldset>
             <legend>上菜</legend>
@@ -257,7 +257,7 @@
     </form>
 </div>
 <br/>
-<h1>菜谱</h1>
+<h2>菜谱</h2>
 <br/><br/>
 <div class="with:80%">
     <table class="table table-hover">

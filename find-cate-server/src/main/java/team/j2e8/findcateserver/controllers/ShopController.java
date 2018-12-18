@@ -51,7 +51,7 @@ public class ShopController {
                                          @RequestParam(value = "${spring.data.rest.limit-param-name}", required = false, defaultValue = "${spring.data.rest.default-page-size}") Integer pageSize,
                                          @RequestParam(value = "${spring.data.rest.sort-param-name}", required = false, defaultValue = "shopId") String sort) {
         Page<Shop> shops = shopService.getShopById(shopId, sort, pageNum, pageSize);
-        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(shops, "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName))"));
+        return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(shops, "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName), user(id, userName, userTelenumber,userPhoto))"));
 
     }
 
@@ -98,6 +98,15 @@ public class ShopController {
         Page<Shop> shops = shopService.getShopsByCondition(lng, lat, name, type, pageNum, pageSize);
         //return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(shops, "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName))"));
         return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(shops,
+                "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName))"));
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "random")
+    public ResponseEntity<?> getShopByRandom(@RequestParam(required = false,defaultValue = "3") Integer number) {
+        Iterable<Shop> shops = shopService.getShopByRandom(number);
+        //return ResponseEntity.ok(new ObjectSelector().mapPagedObjects(shops, "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName))"));
+        return ResponseEntity.ok(new ObjectSelector().mapObjects(shops,
                 "(shopId, shopName, shopTelenumber, shopAddress, shopPhoto, shopLng, shopLat, types(typeId, typeName))"));
     }
 }

@@ -52,12 +52,15 @@ public class PageController {
     }
 
     @RequestMapping(value = "/shop/page")
-    public ModelAndView shopInformation(@RequestParam( defaultValue = "") Integer shopId){
-
-        return new ModelAndView("/page/detail")
-                .addObject("shopId", shopId)
-                .addObject("backserver", backendServer)
-                .addObject("imgserver", imgServer);
+    public ModelAndView shopInformation(@RequestParam( defaultValue = "") Integer shopId,HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView("/page/detail")
+                                            .addObject("shopId", shopId)
+                                            .addObject("backserver", backendServer)
+                                            .addObject("imgserver", imgServer);
+        if (request.getSession().getAttribute("jwtToken")==null){
+            modelAndView.addObject("jwtToken", "null");
+        }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/user/register")

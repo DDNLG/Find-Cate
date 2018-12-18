@@ -34,9 +34,58 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            page = 1;
+            elemenum = 1;
+            last = false;
+            $("#listbottom").hide();
             GetUserInfomation();
-           GetShopListByUser();
+            GetShopListByUser();
+            scrollBottom();
         });
+        $(document).ready(function(){
+            toServeFood();
+        });
+        function scrollBottom() {
+            $(window).scroll(
+
+                    function() {
+                        var scrollTop = $(this).scrollTop();
+                        var scrollHeight = $(document).height();
+                        var windowHeight = $(this).height();
+                        if (scrollTop + windowHeight == scrollHeight) {
+                            // 此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+                            getShopAjax();
+                        }
+                    });
+        }
+        function getShopAjax() {
+            if (!last) {
+                var ajaxurl;
+                ajaxurl = "${backserver}/shop/getsbyuser?number="+page;
+                page = page+1;
+                $.ajax({
+                    url:ajaxurl,
+                    type: 'get',
+                    contentType: 'application/json',
+                    beforeSend: function(request) {
+                        request.setRequestHeader("Jwt-Token","${jwtToken}");
+                    },
+                    success:function (data) {
+                        var json = eval(data);
+                        createShopElement(json);
+                    }
+                });
+            } else {
+                $("#listbottom").show();
+            }
+
+        }
+        function toServeFood() {
+            $(".open-now").click(function (e) {
+                var id = e.target.id;
+                $(location).attr('href', '/food?shopId='+id);
+            })
+        }
         function GetUserInfomation() {
             $.ajax({
                 url:"${backserver}/user/info",
@@ -51,13 +100,12 @@
                     $("#usernametitle").text(data.content[0].userName);
                     $("#navbarDropdownMenuLink").text(data.content[0].userName+">>");
                     $("#usertel").text(data.content[0].userTelenumber);
-                    $("#usertel").text(data.content[0].userTelenumber);if(data.content[0].admin.adminId==data.content[0].id)
+                    if(data.content[0].admin.adminId==data.content[0].id)
                         $("#userDeal").append('<a class="dropdown-item" href="/active">审核</a>');
                     $("#userDeal").append('<a class="dropdown-item" href="/user/quit">退出登录</a>');
                 }
             })
         }
-
         function GetShopListByUser() {
             $.ajax({
                 url:"${backserver}/shop/getsbyuser",
@@ -72,12 +120,11 @@
                 }
             })
         }
-
         function createShopElement(data) {
             var modelList = data.numberOfElements;
             var shops = data.content;
+            last = data.last;
             if (modelList > 0) {
-
                 for (var i = 0; i < modelList; i++) {
                     // var option="<option value=\""+modelList[i].modelId+"\"";
                     // if(_LastModelId && _LastModelId==modelList[i].modelId){
@@ -87,12 +134,11 @@
                     var value = "<div class=\"col-md-4 featured-responsive\" >" +
                             "                       <div class=\"featured-place-wrap\">" +
                             "                                <a href=\"/shop/page?shopId=" + shops[i].shopId + "\">" +
-                            "                                    <img src=\"http://vinsonws.xin:7888/65636438_p0_master1200.jpg\" class=\"img-fluid\" alt=\"#\">" +
+                            "                                    <img src=\"${imgserver}/"+shops[i].shopPhoto+"\" class=\"img-fluid\" alt=\"#\">" +
                             "                                    <span class=\"featured-rating-orange \">6.5</span>" +
                             "                                    <div class=\"featured-title-box\">" +
                             "                                        <h6>" + shops[i].shopName + "</h6>" +
                             "                                        <p>Restaurant </p> <span>• </span>" +
-                            "                                        <p>3 Reviews</p> <span> • </span>" +
                             "                                        <p><span>$$$</span>$$</p>" +
                             "                                        <ul>" +
                             "                                            <li><span class=\"icon-location-pin\"></span>" +
@@ -105,35 +151,35 @@
                             "                                                <p>https://burgerandlobster.com</p>" +
                             "                                            </li>" +
                             "                                        </ul>" +
+                            "                                </a>" +
                             "                                        <div class=\"bottom-icons\">\n" +
-                            "                                            <div class=\"open-now\">OPEN NOW</div>\n" +
+                            "                                            <a href=\"/food?shopId="+shops[i].shopId+"\"><div class=\"open-now\">上菜</div></a>\n" +
                             "                                            <span class=\"ti-heart\"></span>\n" +
                             "                                            <span class=\"ti-bookmark\"></span>\n" +
                             "                                        </div>" +
                             "                                    </div>" +
-                            "                                </a>" +
                             "                            </div></div>";
                     $("#shoplist").append(value);
                 }
             }
         }
         <#--function GetTheShopInformation() {-->
-            <#--$.ajax({-->
-                <#--url:"${backserver}/shop/getone?shopId=${shopId}",-->
-                <#--type: 'get',-->
-                <#--contentType: 'application/json',-->
-                <#--success: function (data) {-->
-                    <#--var json = eval(data);-->
-                    <#--$("#shop_name").text(json.content[0].shopName);-->
-                    <#--$("#shop_address").text(json.content[0].shopAddress);-->
-                    <#--$("#shop_telenumber").text(json.content[0].shopTelenumber)-->
-                <#--}-->
-            <#--})-->
+        <#--$.ajax({-->
+        <#--url:"${backserver}/shop/getone?shopId=${shopId}",-->
+        <#--type: 'get',-->
+        <#--contentType: 'application/json',-->
+        <#--success: function (data) {-->
+        <#--var json = eval(data);-->
+        <#--$("#shop_name").text(json.content[0].shopName);-->
+        <#--$("#shop_address").text(json.content[0].shopAddress);-->
+        <#--$("#shop_telenumber").text(json.content[0].shopTelenumber)-->
+        <#--}-->
+        <#--})-->
         <#--}-->
         <#--function GetCommityList() {-->
-            <#--$.ajax({-->
-                <#--url:"${backserver}/shop/getone?shopId=${shopId}",-->
-            <#--})-->
+        <#--$.ajax({-->
+        <#--url:"${backserver}/shop/getone?shopId=${shopId}",-->
+        <#--})-->
         <#--}-->
     </script>
 </head>
@@ -151,32 +197,32 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
-                                <#--<#if Session.jwtToken?exists>-->
-                                    <#--<li class="nav-item dropdown">-->
-                                        <#--<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                            <#--用户名-->
-                                            <#--<span class="icon-arrow-down"></span>-->
-                                        <#--</a>-->
-                                        <#--<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
-                                            <#--<a class="dropdown-item" href="#">个人主页</a>-->
-                                            <#--<!--<a class="dropdown-item" href="#"></a>&ndash;&gt;-->
-                                            <#--<!--<a class="dropdown-item" href="#">Something else here</a>&ndash;&gt;-->
-                                        <#--</div>-->
-                                    <#--</li>-->
-                                <#--<#else>-->
-                                        <#--<script>location.href="/user/login";</script>-->
-                                <#--</#if>-->
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <#--用户名>-->
-                                        </a>
-                                        <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item" href="/user/info">个人主页</a>
-                                            <a class="dropdown-item" href="/open">开店</a>
-                                            <!--<a class="dropdown-item" href="#"></a>-->
-                                            <!--<a class="dropdown-item" href="#">Something else here</a>-->
-                                        </div>
-                                    </li>
+                        <#--<#if Session.jwtToken?exists>-->
+                        <#--<li class="nav-item dropdown">-->
+                        <#--<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                        <#--用户名-->
+                        <#--<span class="icon-arrow-down"></span>-->
+                        <#--</a>-->
+                        <#--<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+                        <#--<a class="dropdown-item" href="#">个人主页</a>-->
+                        <#--<!--<a class="dropdown-item" href="#"></a>&ndash;&gt;-->
+                        <#--<!--<a class="dropdown-item" href="#">Something else here</a>&ndash;&gt;-->
+                        <#--</div>-->
+                        <#--</li>-->
+                        <#--<#else>-->
+                        <#--<script>location.href="/user/login";</script>-->
+                        <#--</#if>-->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <#--用户名>-->
+                                </a>
+                                <div id="userDeal" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="/user/info">个人主页</a>
+                                    <a class="dropdown-item" href="/open">开店</a>
+                                    <!--<a class="dropdown-item" href="#"></a>-->
+                                    <!--<a class="dropdown-item" href="#">Something else here</a>-->
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -214,7 +260,7 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="featured-btn-wrap">
-                    <a href="#" class="btn btn-danger">查看全部</a>
+                    <a href="#" class="btn btn-danger" id="listbottom">到底了</a>
                 </div>
             </div>
         </div>
@@ -236,11 +282,11 @@
 
                     <p>网络162第八组&nbsp&nbsp&nbsp&nbsp<a href="#" target="_blank" title="关于我们">关于我们
 
-                    <ul>
-                        <li><a href="#"><span class="ti-facebook"></span></a></li>
-                        <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
-                        <li><a href="#"><span class="ti-instagram"></span></a></li>
-                    </ul>
+                        <ul>
+                            <li><a href="#"><span class="ti-facebook"></span></a></li>
+                            <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
+                            <li><a href="#"><span class="ti-instagram"></span></a></li>
+                        </ul>
                 </div>
             </div>
         </div>

@@ -29,6 +29,8 @@
     <script type="text/javascript">
         $(document).ready(function(){
             Search();
+            elemenum = 1;
+            getRandomShop();
         });
         function GetUserInfomation(jwtToken) {
             $.ajax({
@@ -77,8 +79,67 @@
         //
         function SearchCallBack(data) {
             var json = eval(data);
-            var lnglat = "lng=" + json.result.location.lng + "&lat=" + json.result.location.lat;
+            if ($("#shoptext").val().trim().length <1)
+                var lnglat = "lng=" + json.result.location.lng + "&lat=" + json.result.location.lat;
+            else
+                var lnglat = "lng=" + json.result.location.lng + "&lat=" + json.result.location.lat +"&name="+$("#shoptext").val();
             $(location).attr('href', "/list?"+lnglat);
+        }
+
+        function getRandomShop() {
+            $.ajax({
+                url:"${backserver}/shop/random",
+                type: 'get',
+                contentType: 'application/json',
+                success:function (data) {
+                    var json = eval(data);
+                    createShopElementByRandom(json);
+                }
+            })
+        }
+
+        function createShopElementByRandom(data) {
+            var shops = data;
+
+            $.each(shops,function (key,randomShop) {
+
+                // var option="<option value=\""+modelList[i].modelId+"\"";
+                // if(_LastModelId && _LastModelId==modelList[i].modelId){
+                //     option += " selected=\"selected\" "; //默认选中
+                //     _LastModelId=null;
+                // }
+                var value = "<div class=\"col-md-4 featured-responsive\" >" +
+                        "                       <div class=\"featured-place-wrap\">" +
+                        "                                <a href=\"/shop/page?shopId=" + randomShop.shopId + "\">" +
+                        "                                    <img src=\"${imgserver}/" + randomShop.shopPhoto + "\" class=\"img-fluid\" alt=\"#\">" +
+                        "                                    <span class=\"featured-rating-green \">" + (elemenum++) + "</span>" +
+                        "                                    <div class=\"featured-title-box\">" +
+                        "                                        <h6>" + randomShop.shopName + "</h6>" +
+                        "                                        <p>Restaurant </p> <span>• </span>" +
+                        "                                        <p>3 Reviews</p> <span> • </span>" +
+                        "                                        <p><span>$$$</span>$$</p>" +
+                        "                                        <ul>" +
+                        "                                            <li><span class=\"icon-location-pin\"></span>" +
+                        "                                                <p>" + randomShop.shopAddress + "</p>" +
+                        "                                            </li>" +
+                        "                                            <li><span class=\"icon-screen-smartphone\"></span>" +
+                        "                                                <p>" + randomShop.shopTelenumber + "</p>" +
+                        "                                            </li>" +
+                        "                                            <li><span class=\"icon-link\"></span>" +
+                        "                                                <p>https://burgerandlobster.com</p>" +
+                        "                                            </li>" +
+                        "                                        </ul>" +
+                        "                                        <div class=\"bottom-icons\">\n" +
+                        "                                            <div class=\"open-now\">OPEN NOW</div>\n" +
+                        "                                            <span class=\"ti-heart\"></span>\n" +
+                        "                                            <span class=\"ti-bookmark\"></span>\n" +
+                        "                                        </div>" +
+                        "                                    </div>" +
+                        "                                </a>" +
+                        "                            </div></div>";
+                $("#randomShops").append(value);
+
+            })
         }
     </script>
 </head>
@@ -148,7 +209,7 @@
                             <div class="col-md-10">
                                 <form class="form-wrap mt-4" action="listing.ftl" method="get" onsubmit="return false">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <input type="text" placeholder="输入想要查找的美食" class="btn-group1">
+                                        <input type="text" placeholder="输入想要查找的商铺" id="shoptext" class="btn-group1">
                                         <input type="text" placeholder="成都" value="成都" id="addr" class="btn-group2">
                                         <button type="submit" id="search" class="btn-form"><span class="icon-magnifier search-icon"></span>搜索<i class="pe-7s-angle-right"></i></button>
                                     </div>
@@ -163,96 +224,7 @@
     <!--// SLIDER -->
     <!--//END HEADER -->
     <!--============================= FIND PLACES =============================-->
-    <section class="main-block">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-5">
-                    <div class="styled-heading">
-                        <h3>哪些是你喜爱的美食类型？</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="find-place-img_wrap">
-                        <div class="grid">
-                            <figure class="effect-ruby">
-                                <img src="images/find-place1.jpg" class="img-fluid" alt="img13" />
-                                <figcaption>
-                                    <h5>小吃 </h5>
-                                    <p>收藏数量100</p>
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row find-img-align">
-                        <div class="col-md-12">
-                            <div class="find-place-img_wrap">
-                                <div class="grid">
-                                    <figure class="effect-ruby">
-                                        <img src="images/find-place2.jpg" class="img-fluid" alt="img13" />
-                                        <figcaption>
-                                            <h5>西餐</h5>
-                                            <p>收藏数量100</p>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="find-place-img_wrap">
-                                <div class="grid">
-                                    <figure class="effect-ruby">
-                                        <img src="images/find-place3.jpg" class="img-fluid" alt="img13" />
-                                        <figcaption>
-                                            <h5>中餐 </h5>
-                                            <p>收藏数量100</p>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row find-img-align">
-                        <div class="col-md-12">
-                            <div class="find-place-img_wrap">
-                                <div class="grid">
-                                    <figure class="effect-ruby">
-                                        <img src="images/find-place4.jpg" class="img-fluid" alt="img13" />
-                                        <figcaption>
-                                            <h5>日料 </h5>
-                                            <p>收藏数量100</p>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="find-place-img_wrap">
-                                <div class="grid">
-                                    <figure class="effect-ruby">
-                                        <img src="images/find-place5.jpg" class="img-fluid" alt="img13" />
-                                        <figcaption>
-                                            <h5>奇怪的美食</h5>
-                                            <p>收藏数量100</p>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
     <!--//END FIND PLACES -->
     <!--============================= FEATURED PLACES =============================-->
     <section class="main-block light-bg">
@@ -260,112 +232,112 @@
             <div class="row justify-content-center">
                 <div class="col-md-5">
                     <div class="styled-heading">
-                        <h3>美食榜前三甲</h3>
+                        <h3>随机推荐</h3>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 featured-responsive">
-                    <div class="featured-place-wrap">
-                        <a href="detail.ftl">
-                            <img src="images/featured1.jpg" class="img-fluid" alt="#">
-                            <span class="featured-rating-orange">6.5</span>
-                            <div class="featured-title-box">
-                                <h6>Burger & Lobster</h6>
-                                <p>Restaurant </p> <span>• </span>
-                                <p>3 Reviews</p> <span> • </span>
-                                <p><span>$$$</span>$$</p>
-                                <ul>
-                                    <li><span class="icon-location-pin"></span>
-                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                    </li>
-                                    <li><span class="icon-screen-smartphone"></span>
-                                        <p>+44 20 7336 8898</p>
-                                    </li>
-                                    <li><span class="icon-link"></span>
-                                        <p>https://burgerandlobster.com</p>
-                                    </li>
+            <div class="row" id="randomShops">
+                <#--<div class="col-md-4 featured-responsive">-->
+                    <#--<div class="featured-place-wrap">-->
+                        <#--<a href="detail.ftl">-->
+                            <#--<img src="images/featured1.jpg" class="img-fluid" alt="#">-->
+                            <#--<span class="featured-rating-orange">6.5</span>-->
+                            <#--<div class="featured-title-box">-->
+                                <#--<h6>Burger & Lobster</h6>-->
+                                <#--<p>Restaurant </p> <span>• </span>-->
+                                <#--<p>3 Reviews</p> <span> • </span>-->
+                                <#--<p><span>$$$</span>$$</p>-->
+                                <#--<ul>-->
+                                    <#--<li><span class="icon-location-pin"></span>-->
+                                        <#--<p>1301 Avenue, Brooklyn, NY 11230</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-screen-smartphone"></span>-->
+                                        <#--<p>+44 20 7336 8898</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-link"></span>-->
+                                        <#--<p>https://burgerandlobster.com</p>-->
+                                    <#--</li>-->
 
-                                </ul>
-                                <div class="bottom-icons">
-                                    <div class="closed-now">CLOSED NOW</div>
-                                    <span class="ti-heart"></span>
-                                    <span class="ti-bookmark"></span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4 featured-responsive">
-                    <div class="featured-place-wrap">
-                        <a href="detail.ftl">
-                            <img src="images/featured2.jpg" class="img-fluid" alt="#">
-                            <span class="featured-rating-green">9.5</span>
-                            <div class="featured-title-box">
-                                <h6>Joe’s Shanghai</h6>
-                                <p>Restaurant </p> <span>• </span>
-                                <p>3 Reviews</p> <span> • </span>
-                                <p><span>$$$</span>$$</p>
-                                <ul>
-                                    <li><span class="icon-location-pin"></span>
-                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                    </li>
-                                    <li><span class="icon-screen-smartphone"></span>
-                                        <p>+44 20 7336 8898</p>
-                                    </li>
-                                    <li><span class="icon-link"></span>
-                                        <p>https://burgerandlobster.com</p>
-                                    </li>
+                                <#--</ul>-->
+                                <#--<div class="bottom-icons">-->
+                                    <#--<div class="open-now">OPEN NOW</div>-->
+                                    <#--<span class="ti-heart"></span>-->
+                                    <#--<span class="ti-bookmark"></span>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                        <#--</a>-->
+                    <#--</div>-->
+                <#--</div>-->
+                <#--<div class="col-md-4 featured-responsive">-->
+                    <#--<div class="featured-place-wrap">-->
+                        <#--<a href="detail.ftl">-->
+                            <#--<img src="images/featured2.jpg" class="img-fluid" alt="#">-->
+                            <#--<span class="featured-rating-green">9.5</span>-->
+                            <#--<div class="featured-title-box">-->
+                                <#--<h6>Joe’s Shanghai</h6>-->
+                                <#--<p>Restaurant </p> <span>• </span>-->
+                                <#--<p>3 Reviews</p> <span> • </span>-->
+                                <#--<p><span>$$$</span>$$</p>-->
+                                <#--<ul>-->
+                                    <#--<li><span class="icon-location-pin"></span>-->
+                                        <#--<p>1301 Avenue, Brooklyn, NY 11230</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-screen-smartphone"></span>-->
+                                        <#--<p>+44 20 7336 8898</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-link"></span>-->
+                                        <#--<p>https://burgerandlobster.com</p>-->
+                                    <#--</li>-->
 
-                                </ul>
-                                <div class="bottom-icons">
-                                    <div class="closed-now">CLOSED NOW</div>
-                                    <span class="ti-heart"></span>
-                                    <span class="ti-bookmark"></span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4 featured-responsive">
-                    <div class="featured-place-wrap">
-                        <a href="detail.ftl">
-                            <img src="images/featured3.jpg" class="img-fluid" alt="#">
-                            <span class="featured-rating">3.2</span>
-                            <div class="featured-title-box">
-                                <h6>Tasty Hand-Pulled Noodles</h6>
-                                <p>Restaurant </p> <span>• </span>
-                                <p>3 Reviews</p> <span> • </span>
-                                <p><span>$$$</span>$$</p>
-                                <ul>
-                                    <li><span class="icon-location-pin"></span>
-                                        <p>1301 Avenue, Brooklyn, NY 11230</p>
-                                    </li>
-                                    <li><span class="icon-screen-smartphone"></span>
-                                        <p>+44 20 7336 8898</p>
-                                    </li>
-                                    <li><span class="icon-link"></span>
-                                        <p>https://burgerandlobster.com</p>
-                                    </li>
+                                <#--</ul>-->
+                                <#--<div class="bottom-icons">-->
+                                    <#--<div class="closed-now">CLOSED NOW</div>-->
+                                    <#--<span class="ti-heart"></span>-->
+                                    <#--<span class="ti-bookmark"></span>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                        <#--</a>-->
+                    <#--</div>-->
+                <#--</div>-->
+                <#--<div class="col-md-4 featured-responsive">-->
+                    <#--<div class="featured-place-wrap">-->
+                        <#--<a href="detail.ftl">-->
+                            <#--<img src="images/featured3.jpg" class="img-fluid" alt="#">-->
+                            <#--<span class="featured-rating">3.2</span>-->
+                            <#--<div class="featured-title-box">-->
+                                <#--<h6>Tasty Hand-Pulled Noodles</h6>-->
+                                <#--<p>Restaurant </p> <span>• </span>-->
+                                <#--<p>3 Reviews</p> <span> • </span>-->
+                                <#--<p><span>$$$</span>$$</p>-->
+                                <#--<ul>-->
+                                    <#--<li><span class="icon-location-pin"></span>-->
+                                        <#--<p>1301 Avenue, Brooklyn, NY 11230</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-screen-smartphone"></span>-->
+                                        <#--<p>+44 20 7336 8898</p>-->
+                                    <#--</li>-->
+                                    <#--<li><span class="icon-link"></span>-->
+                                        <#--<p>https://burgerandlobster.com</p>-->
+                                    <#--</li>-->
 
-                                </ul>
-                                <div class="bottom-icons">
-                                    <div class="open-now">OPEN NOW</div>
-                                    <span class="ti-heart"></span>
-                                    <span class="ti-bookmark"></span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="featured-btn-wrap">
-                        <a href="#" class="btn btn-danger">查看全部</a>
-                    </div>
-                </div>
-            </div>
+                                <#--</ul>-->
+                                <#--<div class="bottom-icons">-->
+                                    <#--<div class="open-now">OPEN NOW</div>-->
+                                    <#--<span class="ti-heart"></span>-->
+                                    <#--<span class="ti-bookmark"></span>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                        <#--</a>-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</div>-->
+            <#--<div class="row justify-content-center">-->
+                <#--<div class="col-md-4">-->
+                    <#--<div class="featured-btn-wrap">-->
+                        <#--<a href="#" class="btn btn-danger">查看全部</a>-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</div>-->
         </div>
     </section>
     <div class="tlinks">Collect from <a href="http://www.cssmoban.com/" >企业网站模板</a></div>
@@ -376,40 +348,40 @@
             <div class="row justify-content-center">
                 <div class="col-md-5">
                     <div class="styled-heading">
-                        <h3>社区活动</h3>
+                        <h3>类似网站</h3>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="http://www.dianping.com/" class="category-wrap">
                         <div class="category-block">
                                 <img src="images/小吃.png" class="img-fluid" alt="#">
-                            <h6>小吃社区</h6>
+                            <h6>大众点评</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://www.meituan.com/" class="category-wrap">
                         <div class="category-block">
                                 <img src="images/中餐.png" class="img-fluid" alt="#">
-                            <h6>中餐社区</h6>
+                            <h6>美团</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://www.ele.me/home/" class="category-wrap">
                         <div class="category-block">
                                 <img src="images/西餐.png" class="img-fluid" alt="#">
-                            <h6>西餐社区</h6>
+                            <h6>饿了么</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://star.ele.me/waimai?qt=find" class="category-wrap">
                         <div class="category-block">
                                 <img src="images/寿司.png" class="img-fluid" alt="#">
-                            <h6>日料社区</h6>
+                            <h6>饿了么星选</h6>
                         </div>
                     </a>
                 </div>
@@ -417,34 +389,34 @@
 
             <div class="row">
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://www.4008823823.com.cn/kfcios/Html/seasonpromotion.html?utm_source=baidu&utm_medium=cpc&utm_campaign=%E8%82%AF%E5%BE%B7%E5%9F%BA&utm_content=%E5%93%81%E7%89%8C" class="category-wrap">
                         <div class="category-block">
-                                
-                            <h6>奇特美食社区</h6>
+                            <img src="images/餐饮.png" class="img-fluid" alt="#">
+                            <h6>肯德基</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://foursquare.com/" class="category-wrap">
                         <div class="category-block">
                                 <img src="images/酒店餐厅.png" class="img-fluid" alt="#">
-                            <h6>知名餐厅</h6>
+                            <h6>Foursquare</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://www.mcdonalds.com.cn/" class="category-wrap">
                         <div class="category-block">
-                            
-                            <h6>xxxx</h6>
+                                <img src="images/餐厅.png" class="img-fluid" alt="#">
+                            <h6>麦当劳</h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3 category-responsive">
-                    <a href="#" class="category-wrap">
+                    <a href="https://www.4008123123.com/phhs_ios/Special.htm?utm_source=baidu&utm_medium=cpc&utm_campaign=%E5%BF%85%E8%83%9C%E5%AE%A2&utm_content=%E5%93%81%E7%89%8C%E5%AE%98%E7%BD%91" class="category-wrap">
                         <div class="category-block">
-                           
-                            <h6>xxxx</h6>
+                            <img src="images/早餐.png" class="img-fluid" alt="#">
+                            <h6>必胜客</h6>
                         </div>
                     </a>
                 </div>

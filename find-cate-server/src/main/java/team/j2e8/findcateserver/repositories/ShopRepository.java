@@ -43,8 +43,19 @@ public interface ShopRepository extends PagingAndSortingRepository<Shop, Integer
             "and shop_lng > ?1-1 " +
             "and shop_lng < ?1+1 " +
             "and shop_active = 1 " +
-            "like %?4% " +
+            "and shop_name like %?5% " +
             "order by ACOS(SIN((?2 * 3.1415) / 180 ) *SIN((shop_lat * 3.1415) / 180 ) +COS((?2 * 3.1415) / 180 ) * COS((shop_lat * 3.1415) / 180 ) *COS((?1* 3.1415) / 180 - (shop_lng * 3.1415) / 180 ) ) * 6380 asc " +
             "limit ?3,?4", nativeQuery = true)
     List<Shop> findByLngAndLatAndShopName(Double lng, Double lat, int pageNum, int pageSize, String name);
+
+    @Query(value = "select count(*) " +
+            "from shop " +
+            "where shop_lat > ?2-1 " +
+            "and shop_lat < ?2+1 " +
+            "and shop_lng > ?1-1 " +
+            "and shop_lng < ?1+1 " +
+            "and shop_active = 1 " +
+            "and shop_name like %?3% " +
+            "order by ACOS(SIN((?2 * 3.1415) / 180 ) *SIN((shop_lat * 3.1415) / 180 ) +COS((?2 * 3.1415) / 180 ) * COS((shop_lat * 3.1415) / 180 ) *COS((?1* 3.1415) / 180 - (shop_lng * 3.1415) / 180 ) ) * 6380 asc ", nativeQuery = true)
+    Integer findByLngAndLatAndShopNameTest(Double lng, Double lat, String name);
 }
